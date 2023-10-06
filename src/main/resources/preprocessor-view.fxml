@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<VBox alignment="TOP_CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.ksilisk.sapr.controller.PreprocessorController" maxHeight="400" maxWidth="400">
+    <TabPane>
+        <Tab text="Конструкция (CN)" closable="false">
+            <HBox alignment="TOP_CENTER" spacing="20">
+                <VBox spacing="10">
+                    <Label text="Характеристики стержней (XC)"/>
+                    <TableView fx:id="xcTableView" editable="true">
+                        <columns>
+                            <TableColumn fx:id="eCol" text="Модуль упругости" sortable="false"/>
+                            <TableColumn fx:id="bCol" text="Допускаемое напряжение" sortable="false"/>
+                        </columns>
+                    </TableView>
+                    <HBox spacing="20" alignment="TOP_CENTER">
+                        <Button text="Добавить" fx:id="addXC"/>
+                        <Button text="Удалить" fx:id="delXC"/>
+                    </HBox>
+                </VBox>
+                <VBox spacing="10">
+                    <Label text="Создание стержней (XS)"/>
+                    <TableView fx:id="xsTableView" editable="true">
+                        <columns>
+                            <TableColumn fx:id="lCol" text="Длина" sortable="false"/>
+                            <TableColumn fx:id="aCol" text="Площать поперечного сечения" sortable="false"/>
+                            <TableColumn fx:id="xcCol" text="Свойства" sortable="false"/>
+                        </columns>
+                    </TableView>
+                    <HBox spacing="20" alignment="TOP_CENTER">
+                        <Button text="Добавить" fx:id="addXS"/>
+                        <Button text="Удалить" fx:id="delXS"/>
+                    </HBox>
+                </VBox>
+            </HBox>
+        </Tab>
+        <Tab text="Нагрузки (LD)" closable="false">
+            <HBox alignment="TOP_CENTER" spacing="20">
+                <VBox spacing="10">
+                    <Label text="Нагрузки на узлы (QR)"/>
+                    <TableView fx:id="qrTableView" editable="true">
+                        <columns>
+                            <TableColumn fx:id="nCol" text="Узел" sortable="false"/>
+                            <TableColumn fx:id="fCol" text="Нагрузка" sortable="false"/>
+                        </columns>
+                    </TableView>
+                    <HBox spacing="20" alignment="TOP_CENTER">
+                        <Button text="Добавить" fx:id="addQR"/>
+                        <Button text="Удалить" fx:id="delQR"/>
+                    </HBox>
+                </VBox>
+                <VBox spacing="10">
+                    <Label text="Нагрузки на стержни (QS)"/>
+                    <TableView fx:id="qsTableView" editable="true">
+                        <columns>
+                            <TableColumn fx:id="n2Col" text="Стержень" sortable="false"/>
+                            <TableColumn fx:id="qxCol" text="Нагрузка" sortable="false"/>
+                        </columns>
+                    </TableView>
+                    <HBox spacing="20" alignment="TOP_CENTER">
+                        <Button text="Добавить" fx:id="addQS"/>
+                        <Button text="Удалить" fx:id="delQS"/>
+                    </HBox>
+                </VBox>
+            </HBox>
+        </Tab>
+    </TabPane>
+    <HBox spacing="10" alignment="TOP_CENTER">
+        <CheckBox text="Опора слева"/>
+        <CheckBox text="Опора справа"/>
+    </HBox>
+    <HBox spacing="20" alignment="TOP_CENTER">
+        <Button text="Построить" onMouseClicked="#draw"/>
+        <Button text="Сохранить"/>
+    </HBox>
+</VBox>
