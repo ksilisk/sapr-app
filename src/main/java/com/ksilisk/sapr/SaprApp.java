@@ -1,12 +1,16 @@
 package com.ksilisk.sapr;
 
 import com.ksilisk.sapr.config.SaprBarConfig;
+import com.ksilisk.sapr.service.SceneBuilder;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+
+import static com.ksilisk.sapr.config.SaprBarConfig.APP_NAME;
 
 public class SaprApp extends Application {
     @Override
@@ -16,10 +20,15 @@ public class SaprApp extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        SaprBarConfig instance = SaprBarConfig.getInstance();
-        Scene scene = new Scene(FXMLLoader.load(instance.getMainViewFile().toURI().toURL()), 400, 400);
+        SaprBarConfig config = SaprBarConfig.getInstance();
+        Parent parent = FXMLLoader.load(config.getMainViewFile().toURI().toURL());
+        Scene scene = new SceneBuilder()
+                .parent(parent)
+                .height(400)
+                .width(400)
+                .build();
         stage.setResizable(false);
-        stage.setTitle(SaprBarConfig.APP_NAME);
+        stage.setTitle(APP_NAME);
         stage.setScene(scene);
         stage.show();
     }

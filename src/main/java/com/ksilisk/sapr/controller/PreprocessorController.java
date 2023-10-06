@@ -16,7 +16,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.shape.Line;
-import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.converter.DoubleStringConverter;
@@ -61,7 +60,7 @@ public class PreprocessorController implements Initializable {
                 .height(500)
                 .width(500)
                 .build();
-        group.getChildren().add(new Rectangle(1,250,100, 500));
+        group.getChildren().add(new Rectangle(1, 250, 100, 500));
         group.getChildren().add(line);
         Stage stage = new StageBuilder()
                 .scene(scene)
