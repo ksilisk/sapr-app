@@ -5,7 +5,6 @@ import com.ksilisk.sapr.record.QSRecord;
 import com.ksilisk.sapr.record.XCRecord;
 import com.ksilisk.sapr.record.XSRecord;
 import com.ksilisk.sapr.service.RowDeleter;
-import com.ksilisk.sapr.service.SceneBuilder;
 import com.ksilisk.sapr.service.StageBuilder;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -55,11 +54,7 @@ public class PreprocessorController implements Initializable {
     public void draw() {
         Line line = new Line(0, 250, 500, 250);
         Group group = new Group();
-        Scene scene = new SceneBuilder()
-                .parent(group)
-                .height(500)
-                .width(500)
-                .build();
+        Scene scene = new Scene(group);
         group.getChildren().add(new Rectangle(1, 250, 100, 500));
         group.getChildren().add(line);
         Stage stage = new StageBuilder()

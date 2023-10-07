@@ -1,7 +1,6 @@
 package com.ksilisk.sapr;
 
 import com.ksilisk.sapr.config.SaprBarConfig;
-import com.ksilisk.sapr.service.SceneBuilder;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -22,11 +21,7 @@ public class SaprApp extends Application {
     public void start(Stage stage) throws IOException {
         SaprBarConfig config = SaprBarConfig.getInstance();
         Parent parent = FXMLLoader.load(config.getMainViewFile().toURI().toURL());
-        Scene scene = new SceneBuilder()
-                .parent(parent)
-                .height(400)
-                .width(400)
-                .build();
+        Scene scene = new Scene(parent);
         stage.setResizable(false);
         stage.setTitle(APP_NAME);
         stage.setScene(scene);

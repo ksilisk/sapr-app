@@ -3,13 +3,16 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <VBox alignment="TOP_CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.ksilisk.sapr.controller.PreprocessorController" maxHeight="400" maxWidth="400">
+      fx:controller="com.ksilisk.sapr.controller.PreprocessorController" minHeight="450" minWidth="600">
     <TabPane>
         <Tab text="Конструкция (CN)" closable="false">
             <HBox alignment="TOP_CENTER" spacing="20">
                 <VBox spacing="10">
                     <Label text="Характеристики стержней (XC)"/>
                     <TableView fx:id="xcTableView" editable="true">
+                        <columnResizePolicy>
+                            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                        </columnResizePolicy>
                         <columns>
                             <TableColumn fx:id="eCol" text="Модуль упругости" sortable="false"/>
                             <TableColumn fx:id="bCol" text="Допускаемое напряжение" sortable="false"/>
@@ -23,6 +26,9 @@
                 <VBox spacing="10">
                     <Label text="Создание стержней (XS)"/>
                     <TableView fx:id="xsTableView" editable="true">
+                        <columnResizePolicy>
+                            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                        </columnResizePolicy>
                         <columns>
                             <TableColumn fx:id="lCol" text="Длина" sortable="false"/>
                             <TableColumn fx:id="aCol" text="Площать поперечного сечения" sortable="false"/>
@@ -41,6 +47,9 @@
                 <VBox spacing="10">
                     <Label text="Нагрузки на узлы (QR)"/>
                     <TableView fx:id="qrTableView" editable="true">
+                        <columnResizePolicy>
+                            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                        </columnResizePolicy>
                         <columns>
                             <TableColumn fx:id="nCol" text="Узел" sortable="false"/>
                             <TableColumn fx:id="fCol" text="Нагрузка" sortable="false"/>
@@ -54,6 +63,9 @@
                 <VBox spacing="10">
                     <Label text="Нагрузки на стержни (QS)"/>
                     <TableView fx:id="qsTableView" editable="true">
+                        <columnResizePolicy>
+                            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                        </columnResizePolicy>
                         <columns>
                             <TableColumn fx:id="n2Col" text="Стержень" sortable="false"/>
                             <TableColumn fx:id="qxCol" text="Нагрузка" sortable="false"/>

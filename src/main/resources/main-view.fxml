@@ -3,10 +3,10 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.VBox?>
 <VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.ksilisk.sapr.controller.MainController" maxHeight="400" maxWidth="400">
+      fx:controller="com.ksilisk.sapr.controller.MainController" prefHeight="400" prefWidth="400">
     <Label text="SAPR-BAR version 1.0" style="-fx-font-size: 20"/>
     <Label text="Developed by Shaliko Salimov (ksilisk)"/>
-    <Button fx:id="preProcessor" text="Препроцессор" onMouseClicked="#preProcessor" minHeight="50" minWidth="200"/>
-    <Button fx:id="processor" text="Процессор" onMouseClicked="#processor" minHeight="50" minWidth="200"/>
-    <Button fx:id="postProcessor" text="Постпроцессор" onMouseClicked="#postProcessor" minHeight="50" minWidth="200"/>
+    <Button fx:id="preProcessor" text="Препроцессор" onMouseClicked="#process" minHeight="50" minWidth="200" id="preprocessor"/>
+    <Button fx:id="processor" text="Процессор" onMouseClicked="#process" minHeight="50" minWidth="200" id="processor"/>
+    <Button fx:id="postProcessor" text="Постпроцессор" onMouseClicked="#process" minHeight="50" minWidth="200" id="postprocessor"/>
 </VBox>
