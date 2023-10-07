@@ -81,10 +81,10 @@ public class PreprocessorController implements Initializable {
         addQS.setOnMouseClicked(e -> qsTableView.getItems().add(new QSRecord(0, 0)));
         addXC.setOnMouseClicked(e -> xcTableView.getItems().add(new XCRecord(0, 0)));
         addXS.setOnMouseClicked(e -> xsTableView.getItems().add(new XSRecord(0, 0, 0)));
-        delQR.setOnMouseClicked(new RowDeleter<>(qrTableView));
-        delQS.setOnMouseClicked(new RowDeleter<>(qsTableView));
-        delXC.setOnMouseClicked(new RowDeleter<>(xcTableView));
-        delXS.setOnMouseClicked(new RowDeleter<>(xsTableView));
+        delQR.setOnMouseClicked(new RowDeleter(qrTableView));
+        delQS.setOnMouseClicked(new RowDeleter(qsTableView));
+        delXC.setOnMouseClicked(new RowDeleter(xcTableView));
+        delXS.setOnMouseClicked(new RowDeleter(xsTableView));
     }
 
     private void setEditable() {

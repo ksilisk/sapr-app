@@ -19,8 +19,8 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
-    private final Map<String, File> map = new HashMap<>();
     private final SaprBarConfig saprBarConfig = SaprBarConfig.getInstance();
+    private final Map<String, File> map = new HashMap<>();
 
     @FXML
     private Button preProcessor, processor, postProcessor;
