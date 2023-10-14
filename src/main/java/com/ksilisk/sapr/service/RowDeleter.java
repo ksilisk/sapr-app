@@ -14,6 +14,8 @@ public class RowDeleter implements EventHandler<MouseEvent> {
     @Override
     public void handle(MouseEvent event) {
         int row = tableView.getFocusModel().getFocusedIndex();
-        tableView.getItems().remove(row);
+        if (row >= 0) {
+            tableView.getItems().remove(row);
+        }
     }
 }

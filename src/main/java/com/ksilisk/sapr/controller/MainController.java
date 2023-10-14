@@ -20,7 +20,7 @@ import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
     private final SaprBarConfig saprBarConfig = SaprBarConfig.getInstance();
-    private final Map<String, File> map = new HashMap<>();
+    private final Map<String, File> viewsMap = new HashMap<>();
 
     @FXML
     private Button preProcessor, processor, postProcessor;
@@ -29,10 +29,9 @@ public class MainController implements Initializable {
     public void process(MouseEvent event) {
         try {
             Button button = (Button) event.getSource();
-            Parent parent = FXMLLoader.load(map.get(button.getId()).toURI().toURL());
+            Parent parent = FXMLLoader.load(viewsMap.get(button.getId()).toURI().toURL());
             Stage currentStage = (Stage) button.getScene().getWindow();
             Stage newStage = new StageBuilder()
-                    .resizable(true)
                     .title(button.getText())
                     .modality(Modality.WINDOW_MODAL)
                     .scene(new Scene(parent))
@@ -47,8 +46,8 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        map.put(preProcessor.getId(), saprBarConfig.getPreProcessorViewFile());
-        map.put(processor.getId(), saprBarConfig.getProcessorViewFile());
-        map.put(postProcessor.getId(), saprBarConfig.getPostProcessorViewFile());
+        viewsMap.put(preProcessor.getId(), saprBarConfig.getPreProcessorViewFile());
+        viewsMap.put(processor.getId(), saprBarConfig.getProcessorViewFile());
+        viewsMap.put(postProcessor.getId(), saprBarConfig.getPostProcessorViewFile());
     }
 }

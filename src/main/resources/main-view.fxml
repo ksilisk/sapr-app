@@ -6,7 +6,9 @@
       fx:controller="com.ksilisk.sapr.controller.MainController" prefHeight="400" prefWidth="400">
     <Label text="SAPR-BAR version 1.0" style="-fx-font-size: 20"/>
     <Label text="Developed by Shaliko Salimov (ksilisk)"/>
-    <Button fx:id="preProcessor" text="Препроцессор" onMouseClicked="#process" minHeight="50" minWidth="200" id="preprocessor"/>
+    <Button fx:id="preProcessor" text="Препроцессор" onMouseClicked="#process" minHeight="50" minWidth="200"
+            id="preprocessor"/>
     <Button fx:id="processor" text="Процессор" onMouseClicked="#process" minHeight="50" minWidth="200" id="processor"/>
-    <Button fx:id="postProcessor" text="Постпроцессор" onMouseClicked="#process" minHeight="50" minWidth="200" id="postprocessor"/>
+    <Button fx:id="postProcessor" text="Постпроцессор" onMouseClicked="#process" minHeight="50" minWidth="200"
+            id="postprocessor"/>
 </VBox>

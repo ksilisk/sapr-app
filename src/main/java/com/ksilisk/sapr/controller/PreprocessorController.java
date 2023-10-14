@@ -4,19 +4,18 @@ import com.ksilisk.sapr.record.QRRecord;
 import com.ksilisk.sapr.record.QSRecord;
 import com.ksilisk.sapr.record.XCRecord;
 import com.ksilisk.sapr.record.XSRecord;
+import com.ksilisk.sapr.service.Draw;
+import com.ksilisk.sapr.service.Node;
 import com.ksilisk.sapr.service.RowDeleter;
 import com.ksilisk.sapr.service.StageBuilder;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.Rectangle;
-import javafx.stage.Stage;
 import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.IntegerStringConverter;
 
@@ -50,19 +49,31 @@ public class PreprocessorController implements Initializable {
     private Button addXC, addXS, addQR, addQS;
     @FXML
     private Button delXC, delXS, delQR, delQS;
+    @FXML
+    private CheckBox left, right;
 
     public void draw() {
-        Line line = new Line(0, 250, 500, 250);
-        Group group = new Group();
-        Scene scene = new Scene(group);
-        group.getChildren().add(new Rectangle(1, 250, 100, 500));
-        group.getChildren().add(line);
-        Stage stage = new StageBuilder()
-                .scene(scene)
-                .title("some")
-                .resizable(true)
+        Draw draw = Draw.builder()
+                .height(500)
+                .width(700)
+                .margin(100)
+                .leftSupport(true)
+                .rightSupport(true)
+                .node(new Node(10, -10))
                 .build();
-        stage.show();
+        ;
+        new StageBuilder().scene(new Scene(draw, 700, 500)).build().show();
+//        Line line = new Line(0, 250, 500, 250);
+//        Group group = new Group();
+//        Scene scene = new Scene(group);
+//        group.getChildren().add(new Rectangle(1, 250, 100, 500));
+//        group.getChildren().add(line);
+//        Stage stage = new StageBuilder()
+//                .scene(scene)
+//                .title("some")
+//                .resizable(true)
+//                .build();
+//        stage.show();
     }
 
     @Override
