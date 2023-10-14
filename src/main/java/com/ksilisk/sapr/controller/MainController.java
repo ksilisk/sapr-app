@@ -1,7 +1,7 @@
 package com.ksilisk.sapr.controller;
 
 import com.ksilisk.sapr.config.SaprBarConfig;
-import com.ksilisk.sapr.service.StageBuilder;
+import com.ksilisk.sapr.builder.StageBuilder;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;

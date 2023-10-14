@@ -1,14 +1,16 @@
-package com.ksilisk.sapr.service;
+package com.ksilisk.sapr.builder;
 
+import com.ksilisk.sapr.service.Bar;
+import com.ksilisk.sapr.service.Draw;
+import com.ksilisk.sapr.service.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.util.Builder;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 public class DrawBuilder implements Builder<Draw> {
+    private static final double NODE_LOAD_LENGTH = 30;
     private static final double SUPPORT_HEIGHT = 30;
     private static final double SUPPORT_WIDTH = 10;
     private static final Color SUPPORT_COLOR = Color.GREEN;
@@ -81,12 +83,16 @@ public class DrawBuilder implements Builder<Draw> {
             draw.getChildren().add(createSupport(x));
             x += SUPPORT_WIDTH;
         }
-        if (nodes.size() > 0) {
-            draw.getChildren().addAll(createNodeLoad(x, nodes.get(0)));
-        }
         for (int barInd = 0; barInd < bars.size(); barInd++) {
-
+            Rectangle bar = createBar(x, bars.get(barInd));
+            List<Path> barLoad = createBarLoad(x, bars.get(barInd));
+            List<Path> nodeLoad = createNodeLoad(x, nodes.get(barInd));
+            x += bar.getWidth();
+            draw.getChildren().add(bar);
+            draw.getChildren().addAll(barLoad);
+            draw.getChildren().addAll(nodeLoad);
         }
+        draw.getChildren().addAll(createNodeLoad(x, nodes.get(nodes.size() - 1)));
         if (rightSupport) {
             draw.getChildren().add(createSupport(x));
             x += SUPPORT_WIDTH;
@@ -98,46 +104,52 @@ public class DrawBuilder implements Builder<Draw> {
 
     private List<Path> createNodeLoad(double x, Node node) {
         List<Path> loads = new ArrayList<>(2);
-        if (node.getXLoad() != 0) {
-            loads.add(createXVector(x, 40, node.getXLoad() > 0));
+        if (node.XLoad() != 0) {
+            loads.add(createXVector(x, node.XLoad() > 0));
         }
-        if (node.getYLoad() != 0) {
-            loads.add(createYVector(x, 40, node.getYLoad() > 0));
+        if (node.YLoad() != 0) {
+            loads.add(createYVector(x, node.YLoad() > 0));
         }
         return loads;
     }
 
-    private Path createYVector(double x, double length, boolean positive) {
+    private Path createYVector(double x, boolean positive) {
         int sign = positive ? 1 : -1;
         MoveTo moveTo = new MoveTo(x, height / 2);
-        VLineTo vLineTo = new VLineTo((height / 2) + (length * sign));
-        double newHeight = (height / 2) + (length * sign);
+        VLineTo vLineTo = new VLineTo((height / 2) + (NODE_LOAD_LENGTH * sign));
+        double newHeight = (height / 2) + (NODE_LOAD_LENGTH * sign);
         LineTo lineTo = new LineTo(x - 3, newHeight + (3 * (-sign)));
         MoveTo moveTo1 = new MoveTo(x, newHeight);
         LineTo lineTo1 = new LineTo(x + 3, newHeight + (3 * (-sign)));
         Path path = new Path(moveTo, vLineTo, lineTo, moveTo1, lineTo1);
         path.setStrokeWidth(2);
         path.setStroke(Color.RED);
+        path.setViewOrder(0);
         return path;
     }
 
-    private Path createXVector(double x, double length, boolean positive) {
+    private Path createXVector(double x, boolean positive) {
         int sign = positive ? 1 : -1;
         MoveTo moveTo = new MoveTo(x, height / 2);
-        HLineTo hLineTo = new HLineTo(x + (length * sign));
-        double newWidth = x + (length * sign);
+        HLineTo hLineTo = new HLineTo(x + (NODE_LOAD_LENGTH * sign));
+        double newWidth = x + (NODE_LOAD_LENGTH * sign);
         LineTo lineTo = new LineTo(newWidth + (3 * (-sign)), (height / 2) - 3);
         MoveTo moveTo1 = new MoveTo(newWidth, height / 2);
         LineTo lineTo1 = new LineTo(newWidth + (3 * (-sign)), (height / 2) + 3);
         Path path = new Path(moveTo, hLineTo, lineTo, moveTo1, lineTo1);
         path.setStrokeWidth(2);
         path.setStroke(Color.RED);
+        path.setViewOrder(0);
         return path;
     }
 
-    private Path createBarLoad(double x, Bar bar) {
+    private List<Path> createBarLoad(double x, Bar bar) {
         // TODO implement this
-        return null;
+        return Collections.emptyList();
+    }
+
+    private Rectangle createBar(double x, Bar bar) {
+        return new Rectangle(x, (height / 2) - (bar.area() / 2), bar.length(), bar.area());
     }
 
     private Rectangle createSupport(double x) {

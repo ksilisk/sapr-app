@@ -1,4 +1,4 @@
-package com.ksilisk.sapr.service;
+package com.ksilisk.sapr.builder;
 
 import javafx.scene.Scene;
 import javafx.stage.Modality;

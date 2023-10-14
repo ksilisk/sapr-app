@@ -1,13 +1,14 @@
 package com.ksilisk.sapr.controller;
 
+import com.ksilisk.sapr.builder.StageBuilder;
 import com.ksilisk.sapr.record.QRRecord;
 import com.ksilisk.sapr.record.QSRecord;
 import com.ksilisk.sapr.record.XCRecord;
 import com.ksilisk.sapr.record.XSRecord;
+import com.ksilisk.sapr.service.Bar;
 import com.ksilisk.sapr.service.Draw;
 import com.ksilisk.sapr.service.Node;
 import com.ksilisk.sapr.service.RowDeleter;
-import com.ksilisk.sapr.service.StageBuilder;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
@@ -16,6 +17,8 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.IntegerStringConverter;
 
@@ -60,9 +63,36 @@ public class PreprocessorController implements Initializable {
                 .leftSupport(true)
                 .rightSupport(true)
                 .node(new Node(10, -10))
+                .bar(new Bar(50, 0, 0, 40))
+                .bar(new Bar(30, 0, 0, 20))
+                .node(new Node(10, 10))
+                .bar(new Bar(30, 0, 0, 20))
+                .node(new Node(10, 10))
+                .bar(new Bar(30, 0, 0, 20))
+                .node(new Node(10, 10))
+                .bar(new Bar(30, 0, 0, 40))
+                .node(new Node(10, 10))
+                .bar(new Bar(30, 0, 0, 20))
+                .node(new Node(10, 10))
+                .bar(new Bar(30, 0, 0, 20))
+                .node(new Node(10, 10))
+                .bar(new Bar(30, 0, 0, 20))
+                .node(new Node(10, 10))
+                .bar(new Bar(30, 0, 0, 40))
+                .node(new Node(10, 10))
+                .bar(new Bar(30, 0, 0, 20))
+                .node(new Node(10, 10))
+                .bar(new Bar(200, 0, 0, 50))
+                .node(new Node(10, 10))
                 .build();
-        ;
-        new StageBuilder().scene(new Scene(draw, 700, 500)).build().show();
+        Scene scene = new Scene(draw, 700, 500);
+        scene.setOnScroll(event -> {
+            draw.setScaleX(Math.abs(event.getTotalDeltaY()));
+            draw.setScaleY(Math.abs(event.getTotalDeltaY()));
+        });
+        Stage stage = new StageBuilder().scene(scene).build();
+        stage.show();
+
 //        Line line = new Line(0, 250, 500, 250);
 //        Group group = new Group();
 //        Scene scene = new Scene(group);
