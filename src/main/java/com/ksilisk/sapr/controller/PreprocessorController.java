@@ -11,18 +11,19 @@ import com.ksilisk.sapr.service.Node;
 import com.ksilisk.sapr.service.RowDeleter;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.ParallelCamera;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.IntegerStringConverter;
 
 import java.net.URL;
+import java.util.Collections;
 import java.util.ResourceBundle;
 
 import static javafx.scene.control.cell.TextFieldTableCell.forTableColumn;
@@ -86,9 +87,21 @@ public class PreprocessorController implements Initializable {
                 .node(new Node(10, 10))
                 .build();
         Scene scene = new Scene(draw, 700, 500);
+
         scene.setOnScroll(event -> {
-            draw.setScaleX(Math.abs(event.getTotalDeltaY()));
-            draw.setScaleY(Math.abs(event.getTotalDeltaY()));
+            Scene scene1 = (Scene) event.getSource();
+            if (scene1.getCamera() == null) {
+                scene1.setCamera(new ParallelCamera());
+            }
+            if (event.getDeltaY() > 0) {
+                scene1.getCamera().setTranslateX(scene1.getX() + (event.getX() - (scene1.getWidth() / 2)));
+                scene1.getCamera().setTranslateY(scene1.getY() + (event.getY() - (scene1.getHeight() / 2)));
+            }
+            double curr = draw.getScaleX();
+            double newCurr = Math.abs(curr + (event.getDeltaY() > 0 ? 0.1 : -0.1));
+            draw.setScaleX(newCurr);
+            draw.setScaleY(newCurr);
+            System.err.println(draw.getScaleX());
         });
         Stage stage = new StageBuilder().scene(scene).build();
         stage.show();
