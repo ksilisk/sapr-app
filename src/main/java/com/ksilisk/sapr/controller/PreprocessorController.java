@@ -1,24 +1,18 @@
 package com.ksilisk.sapr.controller;
 
-import com.ksilisk.sapr.builder.StageBuilder;
-import com.ksilisk.sapr.record.BarDTO;
-import com.ksilisk.sapr.record.BarLoadDTO;
-import com.ksilisk.sapr.record.BarSpecDTO;
-import com.ksilisk.sapr.record.NodeLoadDTO;
-import com.ksilisk.sapr.service.Draw;
+import com.ksilisk.sapr.dto.BarDTO;
+import com.ksilisk.sapr.dto.BarLoadDTO;
+import com.ksilisk.sapr.dto.BarSpecDTO;
+import com.ksilisk.sapr.dto.NodeLoadDTO;
+import com.ksilisk.sapr.service.PreprocessorService;
 import com.ksilisk.sapr.service.RowDeleter;
-import com.ksilisk.sapr.service.SceneScaleHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Camera;
-import javafx.scene.ParallelCamera;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
 import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.IntegerStringConverter;
 
@@ -61,14 +55,20 @@ public class PreprocessorController implements Initializable {
     @FXML
     private CheckBox left, right;
 
+    private PreprocessorService preprocessorService;
+
     public void draw() {
-        Draw draw = Draw.builder().build();
-        Scene scene = new Scene(draw, 700, 500);
-        Camera camera = new ParallelCamera();
-        scene.setCamera(camera);
-        scene.setOnKeyPressed(new SceneScaleHandler());
-        Stage stage = new StageBuilder().scene(scene).build();
-        stage.show();
+//        Draw draw = Draw.builder().build();
+//        Scene scene = new Scene(draw, 700, 500);
+//        Camera camera = new ParallelCamera();
+//        scene.setCamera(camera);
+//        scene.setOnKeyPressed(new SceneScaleHandler());
+//        Stage stage = new StageBuilder().scene(scene).build();
+//        stage.show();
+    }
+
+    public void save() {
+        // TODO implement this
     }
 
     @Override
@@ -78,6 +78,7 @@ public class PreprocessorController implements Initializable {
     }
 
     private void initColumns() {
+        preprocessorService = new PreprocessorService();
         setCellValueFactories();
         setEditable();
     }

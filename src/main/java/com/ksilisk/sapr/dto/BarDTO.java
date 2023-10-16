@@ -15,8 +15,7 @@ public class BarDTO {
         this.specInd = specInd;
     }
 
-
-    public double getSpecInd() {
+    public int getSpecInd() {
         return specInd;
     }
 

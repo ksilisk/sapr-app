@@ -87,6 +87,6 @@
     </HBox>
     <HBox spacing="20" alignment="TOP_CENTER">
         <Button text="Построить" onMouseClicked="#draw"/>
-        <Button text="Сохранить"/>
+        <Button text="Сохранить" onMouseClicked="#save"/>
     </HBox>
 </VBox>
