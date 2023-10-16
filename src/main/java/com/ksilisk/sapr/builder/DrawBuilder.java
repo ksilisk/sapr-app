@@ -7,7 +7,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.util.Builder;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 public class DrawBuilder implements Builder<Draw> {
     private static final double NODE_LOAD_LENGTH = 30;
@@ -95,10 +98,7 @@ public class DrawBuilder implements Builder<Draw> {
         draw.getChildren().addAll(createNodeLoad(x, nodes.get(nodes.size() - 1)));
         if (rightSupport) {
             draw.getChildren().add(createSupport(x));
-            x += SUPPORT_WIDTH;
         }
-        Path frame = createFrame();
-        draw.getChildren().add(frame);
         return draw;
     }
 
@@ -156,14 +156,5 @@ public class DrawBuilder implements Builder<Draw> {
         Rectangle rectangle = new Rectangle(x, (height / 2) - (SUPPORT_HEIGHT / 2), SUPPORT_WIDTH, SUPPORT_HEIGHT);
         rectangle.setFill(SUPPORT_COLOR);
         return rectangle;
-    }
-
-    private Path createFrame() {
-        MoveTo moveTo = new MoveTo(margin, margin);
-        VLineTo vLineTo = new VLineTo(height - margin);
-        HLineTo hLineTo = new HLineTo(width - margin);
-        VLineTo vLineTo1 = new VLineTo(margin);
-        HLineTo hLineTo1 = new HLineTo(margin);
-        return new Path(moveTo, vLineTo, hLineTo, vLineTo1, hLineTo1);
     }
 }
