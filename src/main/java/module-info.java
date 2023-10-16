@@ -9,6 +9,6 @@ module com.ksilisk.sapr {
     opens com.ksilisk.sapr to javafx.fxml;
     exports com.ksilisk.sapr;
     exports com.ksilisk.sapr.controller;
-    exports com.ksilisk.sapr.record;
+    exports com.ksilisk.sapr.dto;
     opens com.ksilisk.sapr.controller to javafx.fxml;
 }
