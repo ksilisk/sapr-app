@@ -6,7 +6,7 @@ public class BarDTO {
     private int specInd;
 
     public BarDTO() {
-        this(0, 0, 0);
+        this(0, 0, 1);
     }
 
     public BarDTO(double length, double area, int specInd) {

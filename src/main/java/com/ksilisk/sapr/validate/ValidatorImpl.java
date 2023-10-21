@@ -1,26 +1,33 @@
 package com.ksilisk.sapr.validate;
 
 import com.ksilisk.sapr.dto.BarDTO;
-import com.ksilisk.sapr.dto.BarLoadDTO;
 import com.ksilisk.sapr.dto.BarSpecDTO;
-import com.ksilisk.sapr.dto.NodeLoadDTO;
+import com.ksilisk.sapr.payload.ConstructionParameters;
 
-import java.util.Comparator;
 import java.util.List;
 
-public class ValidatorImpl implements Validator {
+public enum ValidatorImpl implements Validator {
+    INSTANCE;
+
     @Override
-    public boolean validate(List<BarDTO> bars, List<BarLoadDTO> barLoads, List<BarSpecDTO> barSpecs, List<NodeLoadDTO> nodeLoads) {
-        if (nodeLoads.size() - bars.size() != 1) {
-            return false;
+    public void validate(ConstructionParameters constructionParameters) {
+        checkSpecs(constructionParameters.bars(), constructionParameters.barSpecs());
+        checkSizes(constructionParameters);
+    }
+
+    private void checkSizes(ConstructionParameters constructionParameters) {
+        if (constructionParameters.nodeLoads().size() - constructionParameters.bars().size() != 1) {
+            throw new ValidationException("Не заданы нагрузки на все узлы конструкции");
         }
-        if (barLoads.size() != bars.size()) {
-            return false;
+        if (constructionParameters.barLoads().size() != constructionParameters.bars().size()) {
+            throw new ValidationException("Не заданы нагрузки на все стержни конструкции");
         }
-        return bars.stream()
-                .map(BarDTO::getSpecInd)
-                .max(Comparator.naturalOrder())
-                .filter(integer -> (barSpecs.size() - 1) >= integer)
-                .isPresent();
+    }
+
+    private void checkSpecs(List<BarDTO> bars, List<BarSpecDTO> barSpecs) {
+        if (bars.stream().allMatch(bar -> bar.getSpecInd() > 0 && bar.getSpecInd() <= barSpecs.size())) {
+            return;
+        }
+        throw new ValidationException("Свойства стержней заданы неверно");
     }
 }

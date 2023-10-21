@@ -14,6 +14,7 @@ public class SaprBarConfig {
     private static final String DEFAULT_PRE_PROCESSOR_VIEW_FILE = "preprocessor-view.fxml";
     private static final String DEFAULT_POST_PROCESSOR_VIEW_FILE = "postprocessor-view.fxml";
     private static final String DEFAULT_MAIN_VIEW_FILE = "main-view.fxml";
+    private static final String DEFAULT_VALIDATION_ERROR_VIEW = "validation-error-view.fxml";
 
     // Configuration files
     public static final String APPLICATION_PROPERTIES_FILE = "sapr-bar.properties";
@@ -24,12 +25,13 @@ public class SaprBarConfig {
     public static final String PRE_PROCESSOR_VIEW_FILE = "sapr.preprocessor.view.file";
     public static final String POST_PROCESSOR_VIEW_FILE = "sapr.postprocessor.view.file";
     public static final String MAIN_VIEW_FILE = "sapr.main.view.file";
+    public static final String VALIDATION_ERROR_VIEW = "sapr.validation.error.view.file";
 
     // Constants
     public static final String APP_NAME = "SAPR-BAR v1.0";
 
     private static SaprBarConfig INSTANCE;
-    private static volatile boolean isLoaded = false;
+    private static boolean isLoaded = false;
 
     private final Properties properties = new Properties();
 
@@ -73,6 +75,11 @@ public class SaprBarConfig {
 
     public File getMainViewFile() {
         String value = properties.getProperty(MAIN_VIEW_FILE, DEFAULT_MAIN_VIEW_FILE);
+        return new File(getApplicationConfigsPath(), value);
+    }
+
+    public File getValidationErrorViewFile() {
+        String value = properties.getProperty(VALIDATION_ERROR_VIEW, DEFAULT_VALIDATION_ERROR_VIEW);
         return new File(getApplicationConfigsPath(), value);
     }
 

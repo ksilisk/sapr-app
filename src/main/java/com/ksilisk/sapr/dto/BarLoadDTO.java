@@ -6,7 +6,7 @@ public class BarLoadDTO {
     private double barQy;
 
     public BarLoadDTO() {
-        this(0, 0, 0);
+        this(1, 0, 0);
     }
 
     public BarLoadDTO(int barInd, double barQx, double barQy) {

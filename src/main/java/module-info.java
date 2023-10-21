@@ -5,6 +5,7 @@ module com.ksilisk.sapr {
     requires org.controlsfx.controls;
     requires com.dlsc.formsfx;
     requires org.kordamp.ikonli.javafx;
+    requires org.slf4j;
 
     opens com.ksilisk.sapr to javafx.fxml;
     exports com.ksilisk.sapr;

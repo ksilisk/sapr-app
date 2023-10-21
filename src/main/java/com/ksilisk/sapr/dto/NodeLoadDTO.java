@@ -6,7 +6,7 @@ public class NodeLoadDTO {
     private double nodeFy;
 
     public NodeLoadDTO() {
-        this(0, 0, 0);
+        this(1, 0, 0);
     }
 
     public NodeLoadDTO(int nodeInd, double nodeFx, double nodeFy) {

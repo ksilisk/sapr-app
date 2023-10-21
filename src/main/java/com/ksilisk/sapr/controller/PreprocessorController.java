@@ -1,13 +1,21 @@
 package com.ksilisk.sapr.controller;
 
+import com.ksilisk.sapr.builder.StageBuilder;
+import com.ksilisk.sapr.config.SaprBarConfig;
 import com.ksilisk.sapr.dto.BarDTO;
 import com.ksilisk.sapr.dto.BarLoadDTO;
 import com.ksilisk.sapr.dto.BarSpecDTO;
 import com.ksilisk.sapr.dto.NodeLoadDTO;
+import com.ksilisk.sapr.payload.ConstructionParameters;
+import com.ksilisk.sapr.service.Draw;
 import com.ksilisk.sapr.service.PreprocessorService;
 import com.ksilisk.sapr.service.RowDeleter;
+import com.ksilisk.sapr.validate.ValidatorImpl;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TableColumn;
@@ -15,13 +23,17 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.IntegerStringConverter;
+import org.controlsfx.validation.ValidationSupport;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import static javafx.scene.control.cell.TextFieldTableCell.forTableColumn;
 
 public class PreprocessorController implements Initializable {
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(PreprocessorController.class);
+
     @FXML
     private TableView<BarDTO> barView;
     @FXML
@@ -30,19 +42,19 @@ public class PreprocessorController implements Initializable {
     private TableColumn<BarDTO, Integer> spec;
 
     @FXML
-    private TableView<BarSpecDTO> barSpecs;
+    private TableView<BarSpecDTO> barSpecsView;
     @FXML
     private TableColumn<BarSpecDTO, Double> elasticMod, permisVolt;
 
     @FXML
-    private TableView<NodeLoadDTO> nodeLoads;
+    private TableView<NodeLoadDTO> nodeLoadsView;
     @FXML
     private TableColumn<NodeLoadDTO, Integer> nodeInd;
     @FXML
     private TableColumn<NodeLoadDTO, Double> nodeFx, nodeFy;
 
     @FXML
-    private TableView<BarLoadDTO> barLoads;
+    private TableView<BarLoadDTO> barLoadsView;
     @FXML
     private TableColumn<BarLoadDTO, Integer> barInd;
     @FXML
@@ -54,11 +66,21 @@ public class PreprocessorController implements Initializable {
     private Button delBar, delBarLoad, delBarSpec, delNodeLoad;
     @FXML
     private CheckBox left, right;
-
+    private final SaprBarConfig config = SaprBarConfig.getInstance();
     private PreprocessorService preprocessorService;
 
-    public void draw() {
-//        Draw draw = Draw.builder().build();
+    public void draw() throws IOException {
+        try {
+            Draw draw = preprocessorService.createDraw(getParameters());
+        } catch (Exception e) {
+            Parent load = FXMLLoader.load(config.getValidationErrorViewFile().toURI().toURL());
+            new StageBuilder().scene(new Scene(load)).build().show();
+        }
+//        if (!validate) {
+//            Parent load = FXMLLoader.load(config.getValidationErrorViewFile().toURI().toURL());
+//            new StageBuilder().scene(new Scene(load)).build().show();
+//        }
+        Draw draw = Draw.builder().build();
 //        Scene scene = new Scene(draw, 700, 500);
 //        Camera camera = new ParallelCamera();
 //        scene.setCamera(camera);
@@ -68,29 +90,40 @@ public class PreprocessorController implements Initializable {
     }
 
     public void save() {
+        log.info("This function Not implemented");
         // TODO implement this
+    }
+
+    public void upload() {
+        log.info("This function Not implemented");
+        // TODO implement this
+    }
+
+    private ConstructionParameters getParameters() {
+        return new ConstructionParameters(barView.getItems(), barLoadsView.getItems(), barSpecsView.getItems(),
+                nodeLoadsView.getItems(), left.isIndeterminate(), right.isIndeterminate());
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        preprocessorService = new PreprocessorService(ValidatorImpl.INSTANCE);
         initColumns();
         initButtons();
     }
 
     private void initColumns() {
-        preprocessorService = new PreprocessorService();
         setCellValueFactories();
         setEditable();
     }
 
     private void initButtons() {
         addBar.setOnMouseClicked(e -> barView.getItems().add(new BarDTO()));
-        addBarSpec.setOnMouseClicked(e -> barSpecs.getItems().add(new BarSpecDTO()));
-        addNodeLoad.setOnMouseClicked(e -> nodeLoads.getItems().add(new NodeLoadDTO()));
-        addBarLoad.setOnMouseClicked(e -> barLoads.getItems().add(new BarLoadDTO()));
-        delNodeLoad.setOnMouseClicked(new RowDeleter(nodeLoads));
-        delBarLoad.setOnMouseClicked(new RowDeleter(barLoads));
-        delBarSpec.setOnMouseClicked(new RowDeleter(barSpecs));
+        addBarSpec.setOnMouseClicked(e -> barSpecsView.getItems().add(new BarSpecDTO()));
+        addNodeLoad.setOnMouseClicked(e -> nodeLoadsView.getItems().add(new NodeLoadDTO()));
+        addBarLoad.setOnMouseClicked(e -> barLoadsView.getItems().add(new BarLoadDTO()));
+        delNodeLoad.setOnMouseClicked(new RowDeleter(nodeLoadsView));
+        delBarLoad.setOnMouseClicked(new RowDeleter(barLoadsView));
+        delBarSpec.setOnMouseClicked(new RowDeleter(barSpecsView));
         delBar.setOnMouseClicked(new RowDeleter(barView));
     }
 

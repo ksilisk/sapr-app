@@ -1,7 +1,7 @@
 package com.ksilisk.sapr.controller;
 
-import com.ksilisk.sapr.config.SaprBarConfig;
 import com.ksilisk.sapr.builder.StageBuilder;
+import com.ksilisk.sapr.config.SaprBarConfig;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -19,13 +19,14 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(MainController.class);
+
     private final SaprBarConfig saprBarConfig = SaprBarConfig.getInstance();
     private final Map<String, File> viewsMap = new HashMap<>();
 
     @FXML
     private Button preProcessor, processor, postProcessor;
 
-    @FXML
     public void process(MouseEvent event) {
         try {
             Button button = (Button) event.getSource();
@@ -40,7 +41,7 @@ public class MainController implements Initializable {
             newStage.show();
             newStage.setOnCloseRequest(e -> currentStage.show());
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            log.error("Error while process button action in Main View. Action: {}", event.getSource(), e);
         }
     }
 
