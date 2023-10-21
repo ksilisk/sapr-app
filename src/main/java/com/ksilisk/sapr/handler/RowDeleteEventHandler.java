@@ -1,13 +1,13 @@
-package com.ksilisk.sapr.service;
+package com.ksilisk.sapr.handler;
 
 import javafx.event.EventHandler;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
 
-public class RowDeleter implements EventHandler<MouseEvent> {
+public class RowDeleteEventHandler implements EventHandler<MouseEvent> {
     private final TableView<?> tableView;
 
-    public RowDeleter(TableView<?> tableView) {
+    public RowDeleteEventHandler(TableView<?> tableView) {
         this.tableView = tableView;
     }
 

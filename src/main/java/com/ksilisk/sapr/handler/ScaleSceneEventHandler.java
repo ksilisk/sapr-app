@@ -1,4 +1,4 @@
-package com.ksilisk.sapr.service;
+package com.ksilisk.sapr.handler;
 
 import javafx.event.EventHandler;
 import javafx.scene.Camera;
@@ -9,7 +9,7 @@ import javafx.scene.transform.Scale;
 import static javafx.scene.input.KeyCode.DOWN;
 import static javafx.scene.input.KeyCode.RIGHT;
 
-public class SceneScaleHandler implements EventHandler<KeyEvent> {
+public class ScaleSceneEventHandler implements EventHandler<KeyEvent> {
     @Override
     public void handle(KeyEvent event) {
         Camera camera = ((Scene) event.getSource()).getCamera();

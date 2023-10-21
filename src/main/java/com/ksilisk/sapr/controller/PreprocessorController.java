@@ -7,9 +7,9 @@ import com.ksilisk.sapr.dto.BarLoadDTO;
 import com.ksilisk.sapr.dto.BarSpecDTO;
 import com.ksilisk.sapr.dto.NodeLoadDTO;
 import com.ksilisk.sapr.payload.ConstructionParameters;
-import com.ksilisk.sapr.service.Draw;
+import com.ksilisk.sapr.payload.Draw;
 import com.ksilisk.sapr.service.PreprocessorService;
-import com.ksilisk.sapr.service.RowDeleter;
+import com.ksilisk.sapr.handler.RowDeleteEventHandler;
 import com.ksilisk.sapr.validate.ValidatorImpl;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,9 +21,9 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.IntegerStringConverter;
-import org.controlsfx.validation.ValidationSupport;
 
 import java.io.IOException;
 import java.net.URL;
@@ -70,12 +70,8 @@ public class PreprocessorController implements Initializable {
     private PreprocessorService preprocessorService;
 
     public void draw() throws IOException {
-        try {
-            Draw draw = preprocessorService.createDraw(getParameters());
-        } catch (Exception e) {
-            Parent load = FXMLLoader.load(config.getValidationErrorViewFile().toURI().toURL());
-            new StageBuilder().scene(new Scene(load)).build().show();
-        }
+        Stage stage = preprocessorService.createDraw(getParameters());
+        stage.show();
 //        if (!validate) {
 //            Parent load = FXMLLoader.load(config.getValidationErrorViewFile().toURI().toURL());
 //            new StageBuilder().scene(new Scene(load)).build().show();
@@ -121,10 +117,10 @@ public class PreprocessorController implements Initializable {
         addBarSpec.setOnMouseClicked(e -> barSpecsView.getItems().add(new BarSpecDTO()));
         addNodeLoad.setOnMouseClicked(e -> nodeLoadsView.getItems().add(new NodeLoadDTO()));
         addBarLoad.setOnMouseClicked(e -> barLoadsView.getItems().add(new BarLoadDTO()));
-        delNodeLoad.setOnMouseClicked(new RowDeleter(nodeLoadsView));
-        delBarLoad.setOnMouseClicked(new RowDeleter(barLoadsView));
-        delBarSpec.setOnMouseClicked(new RowDeleter(barSpecsView));
-        delBar.setOnMouseClicked(new RowDeleter(barView));
+        delNodeLoad.setOnMouseClicked(new RowDeleteEventHandler(nodeLoadsView));
+        delBarLoad.setOnMouseClicked(new RowDeleteEventHandler(barLoadsView));
+        delBarSpec.setOnMouseClicked(new RowDeleteEventHandler(barSpecsView));
+        delBar.setOnMouseClicked(new RowDeleteEventHandler(barView));
     }
 
     private void setEditable() {

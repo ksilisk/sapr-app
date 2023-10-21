@@ -1,4 +1,4 @@
-package com.ksilisk.sapr.service;
+package com.ksilisk.sapr.payload;
 
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -33,7 +33,7 @@ public class Draw extends Group {
         private static final double SUPPORT_WIDTH = 10;
         private static final Color SUPPORT_COLOR = Color.GREEN;
         private final List<Bar> bars = new ArrayList<>();
-        private final List<com.ksilisk.sapr.service.Node> nodes = new ArrayList<>();
+        private final List<com.ksilisk.sapr.payload.Node> nodes = new ArrayList<>();
         private double margin = 20;
         private double width;
         private double height;
@@ -60,12 +60,12 @@ public class Draw extends Group {
             return this;
         }
 
-        public DrawBuilder node(com.ksilisk.sapr.service.Node node) {
+        public DrawBuilder node(com.ksilisk.sapr.payload.Node node) {
             this.nodes.add(node);
             return this;
         }
 
-        public DrawBuilder nodes(Collection<com.ksilisk.sapr.service.Node> nodes) {
+        public DrawBuilder nodes(Collection<com.ksilisk.sapr.payload.Node> nodes) {
             this.nodes.addAll(nodes);
             return this;
         }
@@ -117,7 +117,7 @@ public class Draw extends Group {
             return draw;
         }
 
-        private List<Path> createNodeLoad(double x, com.ksilisk.sapr.service.Node node) {
+        private List<Path> createNodeLoad(double x, com.ksilisk.sapr.payload.Node node) {
             List<Path> loads = new ArrayList<>(2);
             if (node.XLoad() != 0) {
                 loads.add(createXVector(x, node.XLoad() > 0));
