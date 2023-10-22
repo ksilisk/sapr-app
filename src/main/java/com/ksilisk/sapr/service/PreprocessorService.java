@@ -63,10 +63,10 @@ public class PreprocessorService {
                     .build().show();
         } catch (ValidationException e) {
             log.error("Validate construction error. Construction params: {}", constructionParameters, e);
-            errorStageCreator.create(e.getMessage());
+            errorStageCreator.create(e.getMessage()).show();
         } catch (Exception e) {
             log.error("Error while creating draw", e);
-            errorStageCreator.create("Internal Application Error. Try Again!");
+            errorStageCreator.create("Internal Application Error. Try Again!").show();
         }
     }
 
@@ -87,7 +87,7 @@ public class PreprocessorService {
             errorStageCreator.create(e.getMessage()).show();
         } catch (Exception e) {
             log.error("Error while safe construction", e);
-            errorStageCreator.create("Internal Application Error. Try Again!");
+            errorStageCreator.create("Internal Application Error. Try Again!").show();
         }
     }
 
