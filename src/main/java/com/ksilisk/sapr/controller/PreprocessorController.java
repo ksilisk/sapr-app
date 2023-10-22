@@ -1,6 +1,5 @@
 package com.ksilisk.sapr.controller;
 
-import com.ksilisk.sapr.config.SaprBarConfig;
 import com.ksilisk.sapr.dto.BarDTO;
 import com.ksilisk.sapr.dto.BarLoadDTO;
 import com.ksilisk.sapr.dto.BarSpecDTO;
@@ -16,11 +15,16 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.IntegerStringConverter;
 
+import java.io.File;
 import java.net.URL;
+import java.util.Collections;
 import java.util.ResourceBundle;
 
 import static javafx.scene.control.cell.TextFieldTableCell.forTableColumn;
@@ -60,28 +64,30 @@ public class PreprocessorController implements Initializable {
     private Button delBar, delBarLoad, delBarSpec, delNodeLoad;
     @FXML
     private CheckBox left, right;
-    private final SaprBarConfig config = SaprBarConfig.getInstance();
+    private final FileChooser fileChooser = new FileChooser();
+    private final DirectoryChooser directoryChooser = new DirectoryChooser();
     private PreprocessorService preprocessorService;
 
     public void draw() {
-        Stage stage = preprocessorService.createDraw(getParameters());
-        stage.show();
-//        Scene scene = new Scene(draw, 700, 500);
-//        Camera camera = new ParallelCamera();
-//        scene.setCamera(camera);
-//        scene.setOnKeyPressed(new SceneScaleHandler());
-//        Stage stage = new StageBuilder().scene(scene).build();
-//        stage.show();
+        preprocessorService.createDraw(getParameters());
     }
 
-    public void save() {
-        log.info("This function Not implemented");
-        // TODO implement this
+    public void save(MouseEvent event) {
+        Button button = (Button) event.getSource();
+        Stage currentStage = (Stage) button.getScene().getWindow();
+        File chosenDir = directoryChooser.showDialog(currentStage);
+        if (chosenDir != null) {
+            preprocessorService.safe(getParameters(), chosenDir);
+        }
     }
 
-    public void upload() {
-        log.info("This function Not implemented");
-        // TODO implement this
+    public void upload(MouseEvent event) {
+        Button button = (Button) event.getSource();
+        Stage currentStage = (Stage) button.getScene().getWindow();
+        File chosenFile = fileChooser.showOpenDialog(currentStage);
+        if (chosenFile != null) {
+            preprocessorService.upload(chosenFile);
+        }
     }
 
     private ConstructionParameters getParameters() {
@@ -91,6 +97,13 @@ public class PreprocessorController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        File userHomeDir = new File(System.getProperty("user.home"));
+        directoryChooser.setInitialDirectory(userHomeDir);
+        directoryChooser.setTitle("Chooser Directory");
+        fileChooser.setInitialDirectory(userHomeDir);
+        fileChooser.getExtensionFilters()
+                .add(new FileChooser.ExtensionFilter("Json extension filter", Collections.singletonList("*.json")));
+        fileChooser.setTitle("Choose File");
         preprocessorService = new PreprocessorService(new ValidatorImpl());
         initColumns();
         initButtons();
