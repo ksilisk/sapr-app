@@ -9,7 +9,6 @@ import com.ksilisk.sapr.dto.NodeLoadDTO;
 
 import java.util.List;
 
-@JsonSerialize
 public record ConstructionParameters(
         @JsonProperty("bars")
         List<BarDTO> bars,
