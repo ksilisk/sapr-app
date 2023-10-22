@@ -1,8 +1,13 @@
 package com.ksilisk.sapr.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class BarDTO {
+    @JsonProperty("length")
     private double length;
+    @JsonProperty("area")
     private double area;
+    @JsonProperty("spec_index")
     private int specInd;
 
     public BarDTO() {

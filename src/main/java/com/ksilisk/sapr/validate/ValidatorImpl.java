@@ -6,9 +6,7 @@ import com.ksilisk.sapr.payload.ConstructionParameters;
 
 import java.util.List;
 
-public enum ValidatorImpl implements Validator {
-    INSTANCE;
-
+public class ValidatorImpl implements Validator {
     @Override
     public void validate(ConstructionParameters constructionParameters) {
         checkSpecs(constructionParameters.bars(), constructionParameters.barSpecs());

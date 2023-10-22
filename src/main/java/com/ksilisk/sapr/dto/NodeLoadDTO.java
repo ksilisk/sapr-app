@@ -1,8 +1,13 @@
 package com.ksilisk.sapr.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class NodeLoadDTO {
+    @JsonProperty("node_index")
     private int nodeInd;
+    @JsonProperty("fx")
     private double nodeFx;
+    @JsonProperty("fy")
     private double nodeFy;
 
     public NodeLoadDTO() {

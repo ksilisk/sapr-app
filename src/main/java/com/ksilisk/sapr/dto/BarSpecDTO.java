@@ -1,8 +1,11 @@
 package com.ksilisk.sapr.dto;
 
-public class BarSpecDTO {
+import com.fasterxml.jackson.annotation.JsonProperty;
 
+public class BarSpecDTO {
+    @JsonProperty("elastic_mod")
     private double elasticMod;
+    @JsonProperty("permis_volt")
     private double permisVolt;
 
     public BarSpecDTO() {

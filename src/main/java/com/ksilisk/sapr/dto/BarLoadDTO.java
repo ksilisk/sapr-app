@@ -1,8 +1,13 @@
 package com.ksilisk.sapr.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class BarLoadDTO {
+    @JsonProperty("bar_index")
     private int barInd;
+    @JsonProperty("qx")
     private double barQx;
+    @JsonProperty("qy")
     private double barQy;
 
     public BarLoadDTO() {

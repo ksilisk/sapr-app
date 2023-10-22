@@ -119,11 +119,11 @@ public class Draw extends Group {
 
         private List<Path> createNodeLoad(double x, com.ksilisk.sapr.payload.Node node) {
             List<Path> loads = new ArrayList<>(2);
-            if (node.XLoad() != 0) {
-                loads.add(createXVector(x, node.XLoad() > 0));
+            if (node.getXLoad() != 0) {
+                loads.add(createXVector(x, node.getXLoad() > 0));
             }
-            if (node.YLoad() != 0) {
-                loads.add(createYVector(x, node.YLoad() > 0));
+            if (node.getYLoad() != 0) {
+                loads.add(createYVector(x, node.getYLoad() > 0));
             }
             return loads;
         }
@@ -164,7 +164,7 @@ public class Draw extends Group {
         }
 
         private Rectangle createBar(double x, Bar bar) {
-            return new Rectangle(x, (height / 2) - (bar.area() / 2), bar.length(), bar.area());
+            return new Rectangle(x, (height / 2) - (bar.getArea() / 2), bar.getLength(), bar.getArea());
         }
 
         private Rectangle createSupport(double x) {

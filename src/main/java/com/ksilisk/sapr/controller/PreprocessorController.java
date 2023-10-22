@@ -1,21 +1,16 @@
 package com.ksilisk.sapr.controller;
 
-import com.ksilisk.sapr.builder.StageBuilder;
 import com.ksilisk.sapr.config.SaprBarConfig;
 import com.ksilisk.sapr.dto.BarDTO;
 import com.ksilisk.sapr.dto.BarLoadDTO;
 import com.ksilisk.sapr.dto.BarSpecDTO;
 import com.ksilisk.sapr.dto.NodeLoadDTO;
-import com.ksilisk.sapr.payload.ConstructionParameters;
-import com.ksilisk.sapr.payload.Draw;
-import com.ksilisk.sapr.service.PreprocessorService;
 import com.ksilisk.sapr.handler.RowDeleteEventHandler;
+import com.ksilisk.sapr.payload.ConstructionParameters;
+import com.ksilisk.sapr.service.PreprocessorService;
 import com.ksilisk.sapr.validate.ValidatorImpl;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TableColumn;
@@ -25,7 +20,6 @@ import javafx.stage.Stage;
 import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.IntegerStringConverter;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -69,14 +63,9 @@ public class PreprocessorController implements Initializable {
     private final SaprBarConfig config = SaprBarConfig.getInstance();
     private PreprocessorService preprocessorService;
 
-    public void draw() throws IOException {
+    public void draw() {
         Stage stage = preprocessorService.createDraw(getParameters());
         stage.show();
-//        if (!validate) {
-//            Parent load = FXMLLoader.load(config.getValidationErrorViewFile().toURI().toURL());
-//            new StageBuilder().scene(new Scene(load)).build().show();
-//        }
-        Draw draw = Draw.builder().build();
 //        Scene scene = new Scene(draw, 700, 500);
 //        Camera camera = new ParallelCamera();
 //        scene.setCamera(camera);
@@ -97,12 +86,12 @@ public class PreprocessorController implements Initializable {
 
     private ConstructionParameters getParameters() {
         return new ConstructionParameters(barView.getItems(), barLoadsView.getItems(), barSpecsView.getItems(),
-                nodeLoadsView.getItems(), left.isIndeterminate(), right.isIndeterminate());
+                nodeLoadsView.getItems(), left.isSelected(), right.isSelected());
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        preprocessorService = new PreprocessorService(ValidatorImpl.INSTANCE);
+        preprocessorService = new PreprocessorService(new ValidatorImpl());
         initColumns();
         initButtons();
     }
