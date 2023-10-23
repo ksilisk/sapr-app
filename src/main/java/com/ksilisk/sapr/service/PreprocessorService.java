@@ -1,5 +1,6 @@
 package com.ksilisk.sapr.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ksilisk.sapr.builder.StageBuilder;
 import com.ksilisk.sapr.dto.BarLoadDTO;
@@ -13,14 +14,17 @@ import javafx.scene.ParallelCamera;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 import static java.time.format.DateTimeFormatter.ISO_DATE_TIME;
 
@@ -91,8 +95,20 @@ public class PreprocessorService {
         }
     }
 
-    public void upload(File parametersFile) {
-        // todo implement this
+    public Optional<ConstructionParameters> upload(File parametersFile) {
+        log.info("Load construction parameters from file. File path: {}", parametersFile.getAbsolutePath());
+        StringBuilder jsonParams = new StringBuilder();
+        try (BufferedReader reader = Files.newBufferedReader(parametersFile.toPath())) {
+            reader.lines().forEach(jsonParams::append);
+            return Optional.of(om.readValue(jsonParams.toString(), ConstructionParameters.class));
+        } catch (JsonProcessingException e) {
+            log.error("Error while pars params from file. Json params: {}", jsonParams, e);
+            errorStageCreator.create("File is invalid. Parsing error.");
+        } catch (IOException e) {
+            log.error("Error while read params from file.", e);
+            errorStageCreator.create("Internal Application Error. Try Again!").show();
+        }
+        return Optional.empty();
     }
 
     private void prepareParameters(ConstructionParameters parameters) {

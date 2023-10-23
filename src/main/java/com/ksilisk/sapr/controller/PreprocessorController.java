@@ -86,8 +86,21 @@ public class PreprocessorController implements Initializable {
         Stage currentStage = (Stage) button.getScene().getWindow();
         File chosenFile = fileChooser.showOpenDialog(currentStage);
         if (chosenFile != null) {
-            preprocessorService.upload(chosenFile);
+            preprocessorService.upload(chosenFile).ifPresent(this::setParameters);
         }
+    }
+
+    private void setParameters(ConstructionParameters constructionParameters) {
+        barView.getItems().clear();
+        barView.getItems().addAll(constructionParameters.bars());
+        barLoadsView.getItems().clear();
+        barLoadsView.getItems().addAll(constructionParameters.barLoads());
+        barSpecsView.getItems().clear();
+        barSpecsView.getItems().addAll(constructionParameters.barSpecs());
+        nodeLoadsView.getItems().clear();
+        nodeLoadsView.getItems().addAll(constructionParameters.nodeLoads());
+        left.setSelected(constructionParameters.leftSupport());
+        right.setSelected(constructionParameters.rightSupport());
     }
 
     private ConstructionParameters getParameters() {
