@@ -19,7 +19,7 @@ public class SaprApp extends Application {
 //5. Корректная валидация нумерации
 //6. Добавить запрос на закрытие без сохранения
 //7. Убрать fy, qy (fixed)
-//8. Исправить опечатки
+//8. Исправить опечатки (fixed)
     @Override
     public void init() throws Exception {
         SaprBarConfig.load(getParameters().getNamed());

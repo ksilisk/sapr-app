@@ -31,7 +31,7 @@
                         </columnResizePolicy>
                         <columns>
                             <TableColumn fx:id="length" text="Длина" sortable="false"/>
-                            <TableColumn fx:id="area" text="Площать поперечного сечения" sortable="false"/>
+                            <TableColumn fx:id="area" text="Площадь поперечного сечения" sortable="false"/>
                             <TableColumn fx:id="spec" text="Свойства" sortable="false"/>
                         </columns>
                     </TableView>
