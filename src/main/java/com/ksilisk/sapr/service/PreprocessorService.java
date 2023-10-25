@@ -124,7 +124,6 @@ public class PreprocessorService {
             newBar.setArea(bar.getArea());
             newBar.setLength(bar.getLength());
             newBar.setXLoad(constructionParameters.barLoads().get(bar.getSpecInd() - 1).getBarQx());
-            newBar.setYLoad(constructionParameters.barLoads().get(bar.getSpecInd() - 1).getBarQy());
             newBar.setElasticMod(constructionParameters.barSpecs().get(bar.getSpecInd() - 1).getElasticMod());
             newBar.setPermisVolt(constructionParameters.barSpecs().get(bar.getSpecInd() - 1).getPermisVolt());
             bars.add(newBar);
@@ -132,7 +131,6 @@ public class PreprocessorService {
         constructionParameters.nodeLoads().forEach(node -> {
             Node newNode = new Node();
             newNode.setXLoad(node.getNodeFx());
-            newNode.setYLoad(node.getNodeFy());
             nodes.add(newNode);
         });
         return new Construction(bars, nodes, constructionParameters.leftSupport(), constructionParameters.rightSupport());

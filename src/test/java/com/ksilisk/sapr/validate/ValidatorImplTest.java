@@ -28,8 +28,8 @@ class ValidatorImplTest {
     void validateValidData_shouldNotThrowException() {
         // given
         ConstructionParameters constructionParameters = new ConstructionParameters(singletonList(new BarDTO(1, 1, 1)),
-                singletonList(new BarLoadDTO(1, 0, 0)), singletonList(new BarSpecDTO(1, 1)),
-                Arrays.asList(new NodeLoadDTO(1, 1, 1), new NodeLoadDTO(2, 1, 1)),
+                singletonList(new BarLoadDTO(1, 0)), singletonList(new BarSpecDTO(1, 1)),
+                Arrays.asList(new NodeLoadDTO(1, 1), new NodeLoadDTO(2, 1)),
                 true, true);
         Validator validator = new ValidatorImpl();
         // then

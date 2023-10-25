@@ -11,13 +11,12 @@ public class NodeLoadDTO {
     private double nodeFy;
 
     public NodeLoadDTO() {
-        this(1, 0, 0);
+        this(1, 0);
     }
 
-    public NodeLoadDTO(int nodeInd, double nodeFx, double nodeFy) {
+    public NodeLoadDTO(int nodeInd, double nodeFx) {
         this.nodeInd = nodeInd;
         this.nodeFx = nodeFx;
-        this.nodeFy = nodeFy;
     }
 
     public int getNodeInd() {
@@ -34,13 +33,5 @@ public class NodeLoadDTO {
 
     public void setNodeFx(double nodeFx) {
         this.nodeFx = nodeFx;
-    }
-
-    public double getNodeFy() {
-        return nodeFy;
-    }
-
-    public void setNodeFy(double nodeFy) {
-        this.nodeFy = nodeFy;
     }
 }

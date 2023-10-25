@@ -49,14 +49,14 @@ public class PreprocessorController implements Initializable {
     @FXML
     private TableColumn<NodeLoadDTO, Integer> nodeInd;
     @FXML
-    private TableColumn<NodeLoadDTO, Double> nodeFx, nodeFy;
+    private TableColumn<NodeLoadDTO, Double> nodeFx;
 
     @FXML
     private TableView<BarLoadDTO> barLoadsView;
     @FXML
     private TableColumn<BarLoadDTO, Integer> barInd;
     @FXML
-    private TableColumn<BarLoadDTO, Double> barQy, barQx;
+    private TableColumn<BarLoadDTO, Double> barQx;
 
     @FXML
     private Button addBar, addBarLoad, addBarSpec, addNodeLoad;
@@ -156,8 +156,6 @@ public class PreprocessorController implements Initializable {
         // nodeLoads
         nodeInd.setCellFactory(forTableColumn(new IntegerStringConverter()));
         nodeInd.setOnEditCommit(e -> e.getTableView().getItems().get(e.getTablePosition().getRow()).setNodeInd(e.getNewValue()));
-        nodeFy.setCellFactory(forTableColumn(new DoubleStringConverter()));
-        nodeFy.setOnEditCommit(e -> e.getTableView().getItems().get(e.getTablePosition().getRow()).setNodeFy(e.getNewValue()));
         nodeFx.setCellFactory(forTableColumn(new DoubleStringConverter()));
         nodeFx.setOnEditCommit(e -> e.getTableView().getItems().get(e.getTablePosition().getRow()).setNodeFx(e.getNewValue()));
 
@@ -166,8 +164,6 @@ public class PreprocessorController implements Initializable {
         barInd.setOnEditCommit(e -> e.getTableView().getItems().get(e.getTablePosition().getRow()).setBarInd(e.getNewValue()));
         barQx.setCellFactory(forTableColumn(new DoubleStringConverter()));
         barQx.setOnEditCommit(e -> e.getTableView().getItems().get(e.getTablePosition().getRow()).setBarQx(e.getNewValue()));
-        barQy.setCellFactory(forTableColumn(new DoubleStringConverter()));
-        barQy.setOnEditCommit(e -> e.getTableView().getItems().get(e.getTablePosition().getRow()).setBarQy(e.getNewValue()));
     }
 
     private void setCellValueFactories() {
@@ -183,11 +179,9 @@ public class PreprocessorController implements Initializable {
         // nodeLoads
         nodeInd.setCellValueFactory(new PropertyValueFactory<>("nodeInd"));
         nodeFx.setCellValueFactory(new PropertyValueFactory<>("nodeFx"));
-        nodeFy.setCellValueFactory(new PropertyValueFactory<>("nodeFy"));
 
         // barLoads
         barInd.setCellValueFactory(new PropertyValueFactory<>("barInd"));
         barQx.setCellValueFactory(new PropertyValueFactory<>("barQx"));
-        barQy.setCellValueFactory(new PropertyValueFactory<>("barQy"));
     }
 }

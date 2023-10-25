@@ -52,8 +52,7 @@
                         </columnResizePolicy>
                         <columns>
                             <TableColumn fx:id="nodeInd" text="Узел" sortable="false"/>
-                            <TableColumn fx:id="nodeFy" text="Fx" sortable="false"/>
-                            <TableColumn fx:id="nodeFx" text="Fy" sortable="false"/>
+                            <TableColumn fx:id="nodeFx" text="Fx" sortable="false"/>
                         </columns>
                     </TableView>
                     <HBox spacing="20" alignment="TOP_CENTER">
@@ -70,7 +69,6 @@
                         <columns>
                             <TableColumn fx:id="barInd" text="Стержень" sortable="false"/>
                             <TableColumn fx:id="barQx" text="qx" sortable="false"/>
-                            <TableColumn fx:id="barQy" text="qy" sortable="false"/>
                         </columns>
                     </TableView>
                     <HBox spacing="20" alignment="TOP_CENTER">

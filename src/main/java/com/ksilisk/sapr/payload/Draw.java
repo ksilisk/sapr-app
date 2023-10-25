@@ -122,25 +122,7 @@ public class Draw extends Group {
             if (node.getXLoad() != 0) {
                 loads.add(createXVector(x, node.getXLoad() > 0));
             }
-            if (node.getYLoad() != 0) {
-                loads.add(createYVector(x, node.getYLoad() > 0));
-            }
             return loads;
-        }
-
-        private Path createYVector(double x, boolean positive) {
-            int sign = positive ? 1 : -1;
-            MoveTo moveTo = new MoveTo(x, height / 2);
-            VLineTo vLineTo = new VLineTo((height / 2) + (NODE_LOAD_LENGTH * sign));
-            double newHeight = (height / 2) + (NODE_LOAD_LENGTH * sign);
-            LineTo lineTo = new LineTo(x - 3, newHeight + (3 * (-sign)));
-            MoveTo moveTo1 = new MoveTo(x, newHeight);
-            LineTo lineTo1 = new LineTo(x + 3, newHeight + (3 * (-sign)));
-            Path path = new Path(moveTo, vLineTo, lineTo, moveTo1, lineTo1);
-            path.setStrokeWidth(2);
-            path.setStroke(Color.RED);
-            path.setViewOrder(0);
-            return path;
         }
 
         private Path createXVector(double x, boolean positive) {

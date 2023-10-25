@@ -3,7 +3,6 @@ package com.ksilisk.sapr.payload;
 public class Bar {
     double length;
     double XLoad;
-    double YLoad;
     double area;
     double elasticMod;
     double permisVolt;
@@ -25,14 +24,6 @@ public class Bar {
 
     public void setXLoad(double XLoad) {
         this.XLoad = XLoad;
-    }
-
-    public double getYLoad() {
-        return YLoad;
-    }
-
-    public void setYLoad(double YLoad) {
-        this.YLoad = YLoad;
     }
 
     public double getArea() {

@@ -7,17 +7,14 @@ public class BarLoadDTO {
     private int barInd;
     @JsonProperty("qx")
     private double barQx;
-    @JsonProperty("qy")
-    private double barQy;
 
     public BarLoadDTO() {
-        this(1, 0, 0);
+        this(1, 0);
     }
 
-    public BarLoadDTO(int barInd, double barQx, double barQy) {
+    public BarLoadDTO(int barInd, double barQx) {
         this.barInd = barInd;
         this.barQx = barQx;
-        this.barQy = barQy;
     }
 
     public int getBarInd() {
@@ -34,13 +31,5 @@ public class BarLoadDTO {
 
     public void setBarQx(double barQx) {
         this.barQx = barQx;
-    }
-
-    public double getBarQy() {
-        return barQy;
-    }
-
-    public void setBarQy(double barQy) {
-        this.barQy = barQy;
     }
 }
