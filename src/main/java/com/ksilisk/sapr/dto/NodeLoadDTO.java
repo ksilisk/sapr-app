@@ -7,8 +7,6 @@ public class NodeLoadDTO {
     private int nodeInd;
     @JsonProperty("fx")
     private double nodeFx;
-    @JsonProperty("fy")
-    private double nodeFy;
 
     public NodeLoadDTO() {
         this(1, 0);
