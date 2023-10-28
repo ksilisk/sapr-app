@@ -54,7 +54,7 @@ public class ValidatorImpl implements Validator {
 
     private void checkSpecs(List<BarDTO> bars, List<BarSpecDTO> barSpecs) {
         if (!bars.stream().allMatch(bar -> bar.getSpecInd() > 0 && bar.getSpecInd() <= barSpecs.size())) {
-            throw new ValidationException("Заданы не все свойства стежней");
+            throw new ValidationException("Заданы не все свойства стержней");
         }
         if (!barSpecs.stream().allMatch(spec -> spec.getElasticMod() > 0 && spec.getPermisVolt() > 0)) {
             throw new ValidationException("Значения свойств стержней заданы неверно");

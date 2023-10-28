@@ -30,18 +30,19 @@ public class Draw extends Group {
     public static class DrawBuilder implements Builder<Draw> {
         private static final double DEFAULT_DRAW_WIDTH = 700;
         private static final double DEFAULT_DRAW_HEIGHT = 500;
-        private static final double NODE_LOAD_LENGTH = 30;
-        private static final double MIN_BAR_LENGTH = 50;
+        private static final double DEFAULT_MARGIN = 20;
+        private static final double NODE_LOAD_LENGTH = 25;
+        private static final double MIN_BAR_LENGTH = 60;
         private static final double MIN_BAR_AREA = 30;
         private static final double SUPPORT_HEIGHT = 30;
         private static final double SUPPORT_WIDTH = 10;
         private static final Color SUPPORT_COLOR = Color.GREEN;
-        private static final Color BAR_LOAD_COLOR = Color.GREEN;
+        private static final Color BAR_LOAD_COLOR = Color.BLUE;
         private static final Color NODE_LOAD_COLOR = Color.RED;
         private static final double BAR_LOAD_SUB_VECTOR_LENGTH = 10;
         private final List<Bar> bars = new ArrayList<>();
         private final List<com.ksilisk.sapr.payload.Node> nodes = new ArrayList<>();
-        private double margin = 20;
+        private double margin = DEFAULT_MARGIN;
         private double width = DEFAULT_DRAW_WIDTH;
         private double height = DEFAULT_DRAW_HEIGHT;
         private boolean leftSupport;
@@ -126,11 +127,11 @@ public class Draw extends Group {
         }
 
         private Optional<Path> createNodeLoad(double x, com.ksilisk.sapr.payload.Node node) {
-            Path path = createXVector(x, node.getXLoad() > 0, NODE_LOAD_LENGTH);
-            path.setStroke(NODE_LOAD_COLOR);
-            path.setViewOrder(-1);
+            Path loadVector = createXVector(x, node.getXLoad() > 0, NODE_LOAD_LENGTH);
+            loadVector.setStroke(NODE_LOAD_COLOR);
+            loadVector.setViewOrder(-1);
             return node.getXLoad() != 0
-                    ? Optional.of(path)
+                    ? Optional.of(loadVector)
                     : Optional.empty();
         }
 
@@ -181,13 +182,13 @@ public class Draw extends Group {
         private Rectangle createBar(double x, Bar bar) {
             double barLength = bar.getLength();
             double barArea = bar.getArea();
-            if (barLength > width) {
+            if (barLength >= width) {
                 barLength = width / 2;
             }
             if (barLength < MIN_BAR_LENGTH) {
                 barLength = MIN_BAR_LENGTH;
             }
-            if (barArea > height) {
+            if (barArea >= height) {
                 barArea = height / 3;
             }
             if (barArea < MIN_BAR_AREA) {

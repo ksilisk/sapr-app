@@ -32,4 +32,12 @@ public class NodeLoadDTO {
     public void setNodeFx(double nodeFx) {
         this.nodeFx = nodeFx;
     }
+
+    @Override
+    public String toString() {
+        return "NodeLoadDTO{" +
+                "nodeInd=" + nodeInd +
+                ", nodeFx=" + nodeFx +
+                '}';
+    }
 }

@@ -32,4 +32,12 @@ public class BarLoadDTO {
     public void setBarQx(double barQx) {
         this.barQx = barQx;
     }
+
+    @Override
+    public String toString() {
+        return "BarLoadDTO{" +
+                "barInd=" + barInd +
+                ", barQx=" + barQx +
+                '}';
+    }
 }

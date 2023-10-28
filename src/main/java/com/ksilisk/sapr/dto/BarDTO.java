@@ -43,4 +43,13 @@ public class BarDTO {
     public void setLength(double length) {
         this.length = length;
     }
+
+    @Override
+    public String toString() {
+        return "BarDTO{" +
+                "length=" + length +
+                ", area=" + area +
+                ", specInd=" + specInd +
+                '}';
+    }
 }

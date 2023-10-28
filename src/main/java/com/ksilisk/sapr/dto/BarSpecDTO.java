@@ -32,4 +32,12 @@ public class BarSpecDTO {
     public void setPermisVolt(double permisVolt) {
         this.permisVolt = permisVolt;
     }
+
+    @Override
+    public String toString() {
+        return "BarSpecDTO{" +
+                "elasticMod=" + elasticMod +
+                ", permisVolt=" + permisVolt +
+                '}';
+    }
 }
