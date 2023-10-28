@@ -36,6 +36,8 @@ public class Draw extends Group {
         private static final double SUPPORT_HEIGHT = 30;
         private static final double SUPPORT_WIDTH = 10;
         private static final Color SUPPORT_COLOR = Color.GREEN;
+        private static final Color BAR_LOAD_COLOR = Color.GREEN;
+        private static final Color NODE_LOAD_COLOR = Color.RED;
         private static final double BAR_LOAD_SUB_VECTOR_LENGTH = 10;
         private final List<Bar> bars = new ArrayList<>();
         private final List<com.ksilisk.sapr.payload.Node> nodes = new ArrayList<>();
@@ -125,8 +127,7 @@ public class Draw extends Group {
 
         private Optional<Path> createNodeLoad(double x, com.ksilisk.sapr.payload.Node node) {
             Path path = createXVector(x, node.getXLoad() > 0, NODE_LOAD_LENGTH);
-            path.setStrokeWidth(2);
-            path.setStroke(Color.RED);
+            path.setStroke(NODE_LOAD_COLOR);
             path.setViewOrder(-1);
             return node.getXLoad() != 0
                     ? Optional.of(path)
@@ -159,8 +160,7 @@ public class Draw extends Group {
                         return v1;
                     })
                     .map(path -> {
-                        path.setStroke(Color.BLUE);
-                        path.setStrokeWidth(2);
+                        path.setStroke(BAR_LOAD_COLOR);
                         return path;
                     });
         }
@@ -173,7 +173,9 @@ public class Draw extends Group {
             LineTo lineTo = new LineTo(newWidth + (3 * (-sign)), (height / 2) - 3);
             MoveTo moveTo1 = new MoveTo(newWidth, height / 2);
             LineTo lineTo1 = new LineTo(newWidth + (3 * (-sign)), (height / 2) + 3);
-            return new Path(moveTo, hLineTo, lineTo, moveTo1, lineTo1);
+            Path path = new Path(moveTo, hLineTo, lineTo, moveTo1, lineTo1);
+            path.setStrokeWidth(2);
+            return path;
         }
 
         private Rectangle createBar(double x, Bar bar) {

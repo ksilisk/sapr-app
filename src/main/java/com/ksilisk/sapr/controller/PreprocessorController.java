@@ -112,7 +112,7 @@ public class PreprocessorController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         File userHomeDir = new File(System.getProperty("user.home"));
         directoryChooser.setInitialDirectory(userHomeDir);
-        directoryChooser.setTitle("Chooser Directory");
+        directoryChooser.setTitle("Choose Directory");
         fileChooser.setInitialDirectory(userHomeDir);
         fileChooser.getExtensionFilters()
                 .add(new FileChooser.ExtensionFilter("Json extension filter", Collections.singletonList("*.json")));

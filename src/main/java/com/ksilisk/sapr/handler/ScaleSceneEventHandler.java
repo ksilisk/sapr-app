@@ -5,6 +5,7 @@ import javafx.scene.Camera;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.transform.Scale;
+import javafx.stage.Stage;
 
 import static javafx.scene.input.KeyCode.DOWN;
 import static javafx.scene.input.KeyCode.RIGHT;
@@ -27,6 +28,7 @@ public class ScaleSceneEventHandler implements EventHandler<KeyEvent> {
                     camera.getTransforms().add(new Scale(0.9, 0.9));
                 }
             }
+            case ESCAPE -> ((Stage) ((Scene) event.getSource()).getWindow()).close();
         }
     }
 }
