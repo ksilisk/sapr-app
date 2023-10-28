@@ -8,8 +8,8 @@ import javafx.util.Builder;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public class Draw extends Group {
     public Draw() {
@@ -32,6 +32,7 @@ public class Draw extends Group {
         private static final double SUPPORT_HEIGHT = 30;
         private static final double SUPPORT_WIDTH = 10;
         private static final Color SUPPORT_COLOR = Color.GREEN;
+        private static final double BAR_LOAD_SUB_VECTOR_LENGTH = 10;
         private final List<Bar> bars = new ArrayList<>();
         private final List<com.ksilisk.sapr.payload.Node> nodes = new ArrayList<>();
         private double margin = 20;
@@ -103,46 +104,71 @@ public class Draw extends Group {
             }
             for (int barInd = 0; barInd < bars.size(); barInd++) {
                 Rectangle bar = createBar(x, bars.get(barInd));
-                List<Path> barLoad = createBarLoad(x, bars.get(barInd));
-                List<Path> nodeLoad = createNodeLoad(x, nodes.get(barInd));
-                x += bar.getWidth();
                 draw.getChildren().add(bar);
-                draw.getChildren().addAll(barLoad);
-                draw.getChildren().addAll(nodeLoad);
+                createNodeLoad(x, nodes.get(barInd))
+                        .ifPresent(load -> draw.getChildren().add(load));
+                createBarLoad(x, bars.get(barInd))
+                        .ifPresent(load -> draw.getChildren().add(load));
+                x += bar.getWidth();
             }
-            draw.getChildren().addAll(createNodeLoad(x, nodes.get(nodes.size() - 1)));
+            createNodeLoad(x, nodes.get(nodes.size() - 1))
+                    .ifPresent(load -> draw.getChildren().add(load));
             if (rightSupport) {
                 draw.getChildren().add(createSupport(x));
             }
             return draw;
         }
 
-        private List<Path> createNodeLoad(double x, com.ksilisk.sapr.payload.Node node) {
-            List<Path> loads = new ArrayList<>(2);
-            if (node.getXLoad() != 0) {
-                loads.add(createXVector(x, node.getXLoad() > 0));
-            }
-            return loads;
+        private Optional<Path> createNodeLoad(double x, com.ksilisk.sapr.payload.Node node) {
+            Path path = createXVector(x, node.getXLoad() > 0, NODE_LOAD_LENGTH);
+            path.setStrokeWidth(2);
+            path.setStroke(Color.RED);
+            path.setViewOrder(-1);
+            return node.getXLoad() != 0
+                    ? Optional.of(path)
+                    : Optional.empty();
         }
 
-        private Path createXVector(double x, boolean positive) {
+        private Optional<Path> createBarLoad(double x, Bar bar) {
+            if (bar.getXLoad() == 0) {
+                return Optional.empty();
+            }
+            int sign = 1;
+            if (bar.getXLoad() < 0) {
+                x += bar.getLength();
+                sign = -1;
+            }
+            int countSubVectors = (int) (bar.getLength() / BAR_LOAD_SUB_VECTOR_LENGTH);
+            List<Path> loadSubVectors = new ArrayList<>();
+            while (countSubVectors > 1) {
+                loadSubVectors.add(createXVector(x, bar.getXLoad() > 0, BAR_LOAD_SUB_VECTOR_LENGTH));
+                countSubVectors--;
+                x += BAR_LOAD_SUB_VECTOR_LENGTH * sign;
+            }
+            if (countSubVectors > 0) {
+                loadSubVectors.add(createXVector(x, bar.getXLoad() > 0, BAR_LOAD_SUB_VECTOR_LENGTH + (bar.getLength() % BAR_LOAD_SUB_VECTOR_LENGTH)));
+            }
+            return loadSubVectors.stream()
+                    .reduce((v1, v2) -> {
+                        v1.getElements().addAll(v2.getElements());
+                        return v1;
+                    })
+                    .map(path -> {
+                        path.setStroke(Color.BLUE);
+                        path.setStrokeWidth(2);
+                        return path;
+                    });
+        }
+
+        private Path createXVector(double x, boolean positive, double length) {
             int sign = positive ? 1 : -1;
             MoveTo moveTo = new MoveTo(x, height / 2);
-            HLineTo hLineTo = new HLineTo(x + (NODE_LOAD_LENGTH * sign));
-            double newWidth = x + (NODE_LOAD_LENGTH * sign);
+            HLineTo hLineTo = new HLineTo(x + (length * sign));
+            double newWidth = x + (length * sign);
             LineTo lineTo = new LineTo(newWidth + (3 * (-sign)), (height / 2) - 3);
             MoveTo moveTo1 = new MoveTo(newWidth, height / 2);
             LineTo lineTo1 = new LineTo(newWidth + (3 * (-sign)), (height / 2) + 3);
-            Path path = new Path(moveTo, hLineTo, lineTo, moveTo1, lineTo1);
-            path.setStrokeWidth(2);
-            path.setStroke(Color.RED);
-            path.setViewOrder(0);
-            return path;
-        }
-
-        private List<Path> createBarLoad(double x, Bar bar) {
-            // TODO implement this
-            return Collections.emptyList();
+            return new Path(moveTo, hLineTo, lineTo, moveTo1, lineTo1);
         }
 
         private Rectangle createBar(double x, Bar bar) {

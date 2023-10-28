@@ -1,11 +1,11 @@
 package com.ksilisk.sapr.payload;
 
 public class Bar {
-    double length;
-    double XLoad;
-    double area;
-    double elasticMod;
-    double permisVolt;
+    private double length;
+    private double XLoad;
+    private double area;
+    private double elasticMod;
+    private double permisVolt;
 
     public Bar() {
     }

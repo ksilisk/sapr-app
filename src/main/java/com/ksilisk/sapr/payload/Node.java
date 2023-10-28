@@ -1,7 +1,7 @@
 package com.ksilisk.sapr.payload;
 
 public class Node {
-    double XLoad;
+    private double XLoad;
 
     public Node() {
     }
