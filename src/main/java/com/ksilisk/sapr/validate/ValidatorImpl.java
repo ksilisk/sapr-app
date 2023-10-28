@@ -10,7 +10,14 @@ public class ValidatorImpl implements Validator {
     @Override
     public void validate(ConstructionParameters constructionParameters) {
         checkSpecs(constructionParameters.bars(), constructionParameters.barSpecs());
+        checkBars(constructionParameters.bars());
         checkSizes(constructionParameters);
+    }
+
+    private void checkBars(List<BarDTO> bars) {
+        if (!bars.stream().allMatch(bar -> bar.getArea() > 0 && bar.getLength() > 0)) {
+            throw new ValidationException("Параметры стержней заданы неверно");
+        }
     }
 
     private void checkSizes(ConstructionParameters constructionParameters) {
@@ -20,12 +27,17 @@ public class ValidatorImpl implements Validator {
         if (constructionParameters.barLoads().size() != constructionParameters.bars().size()) {
             throw new ValidationException("Не заданы нагрузки на все стержни конструкции");
         }
+        if (!(constructionParameters.leftSupport() || constructionParameters.rightSupport())) {
+            throw new ValidationException("У конструкции должна быть как минимум одна опора");
+        }
     }
 
     private void checkSpecs(List<BarDTO> bars, List<BarSpecDTO> barSpecs) {
-        if (bars.stream().allMatch(bar -> bar.getSpecInd() > 0 && bar.getSpecInd() <= barSpecs.size())) {
-            return;
+        if (!bars.stream().allMatch(bar -> bar.getSpecInd() > 0 && bar.getSpecInd() <= barSpecs.size())) {
+            throw new ValidationException("Заданы не все свойства стежней");
         }
-        throw new ValidationException("Свойства стержней заданы неверно");
+        if (!barSpecs.stream().allMatch(spec -> spec.getElasticMod() > 0 && spec.getPermisVolt() > 0)) {
+            throw new ValidationException("Значения свойств стержней заданы неверно");
+        }
     }
 }

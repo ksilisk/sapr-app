@@ -6,7 +6,9 @@ import com.ksilisk.sapr.builder.StageBuilder;
 import com.ksilisk.sapr.dto.BarLoadDTO;
 import com.ksilisk.sapr.dto.NodeLoadDTO;
 import com.ksilisk.sapr.handler.ScaleSceneEventHandler;
-import com.ksilisk.sapr.payload.*;
+import com.ksilisk.sapr.payload.Construction;
+import com.ksilisk.sapr.payload.ConstructionParameters;
+import com.ksilisk.sapr.payload.Draw;
 import com.ksilisk.sapr.validate.ValidationException;
 import com.ksilisk.sapr.validate.Validator;
 import javafx.scene.Camera;
@@ -21,9 +23,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Optional;
 
 import static java.time.format.DateTimeFormatter.ISO_DATE_TIME;
@@ -46,7 +46,7 @@ public class PreprocessorService {
         try {
             prepareParameters(constructionParameters);
             validator.validate(constructionParameters);
-            Construction construction = paramsToConstruction(constructionParameters);
+            Construction construction = Construction.fromParameters(constructionParameters);
             constructionStorage.setConstruction(construction);
             Draw draw = Draw.builder()
                     .bars(construction.bars())
@@ -114,25 +114,5 @@ public class PreprocessorService {
     private void prepareParameters(ConstructionParameters parameters) {
         parameters.nodeLoads().sort(Comparator.comparingInt(NodeLoadDTO::getNodeInd));
         parameters.barLoads().sort(Comparator.comparingInt(BarLoadDTO::getBarInd));
-    }
-
-    private Construction paramsToConstruction(ConstructionParameters constructionParameters) {
-        List<Bar> bars = new ArrayList<>();
-        List<Node> nodes = new ArrayList<>();
-        constructionParameters.bars().forEach(bar -> {
-            Bar newBar = new Bar();
-            newBar.setArea(bar.getArea());
-            newBar.setLength(bar.getLength());
-            newBar.setXLoad(constructionParameters.barLoads().get(bar.getSpecInd() - 1).getBarQx());
-            newBar.setElasticMod(constructionParameters.barSpecs().get(bar.getSpecInd() - 1).getElasticMod());
-            newBar.setPermisVolt(constructionParameters.barSpecs().get(bar.getSpecInd() - 1).getPermisVolt());
-            bars.add(newBar);
-        });
-        constructionParameters.nodeLoads().forEach(node -> {
-            Node newNode = new Node();
-            newNode.setXLoad(node.getNodeFx());
-            nodes.add(newNode);
-        });
-        return new Construction(bars, nodes, constructionParameters.leftSupport(), constructionParameters.rightSupport());
     }
 }
