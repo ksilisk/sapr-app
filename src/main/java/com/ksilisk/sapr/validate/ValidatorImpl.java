@@ -1,7 +1,9 @@
 package com.ksilisk.sapr.validate;
 
 import com.ksilisk.sapr.dto.BarDTO;
+import com.ksilisk.sapr.dto.BarLoadDTO;
 import com.ksilisk.sapr.dto.BarSpecDTO;
+import com.ksilisk.sapr.dto.NodeLoadDTO;
 import com.ksilisk.sapr.payload.ConstructionParameters;
 
 import java.util.List;
@@ -21,10 +23,28 @@ public class ValidatorImpl implements Validator {
     }
 
     private void checkSizes(ConstructionParameters constructionParameters) {
-        if (constructionParameters.nodeLoads().size() - constructionParameters.bars().size() != 1) {
+        List<Integer> countBarLoads = constructionParameters.barLoads().stream()
+                .map(BarLoadDTO::getBarInd)
+                .sorted()
+                .toList();
+        List<Integer> countNodeLoads = constructionParameters.nodeLoads().stream()
+                .map(NodeLoadDTO::getNodeInd)
+                .sorted()
+                .toList();
+        for (int i = 0; i < countBarLoads.size(); i++) {
+            if (countBarLoads.get(i) != i + 1) {
+                throw new ValidationException("Не заданы нагрузки на все стержни конструкции");
+            }
+        }
+        for (int i = 0; i < countNodeLoads.size(); i++) {
+            if (countNodeLoads.get(i) != i + 1) {
+                throw new ValidationException("Не заданы нагрузки на все узлы конструкции");
+            }
+        }
+        if (countNodeLoads.size() - constructionParameters.bars().size() != 1) {
             throw new ValidationException("Не заданы нагрузки на все узлы конструкции");
         }
-        if (constructionParameters.barLoads().size() != constructionParameters.bars().size()) {
+        if (countBarLoads.size() != constructionParameters.bars().size()) {
             throw new ValidationException("Не заданы нагрузки на все стержни конструкции");
         }
         if (!(constructionParameters.leftSupport() || constructionParameters.rightSupport())) {

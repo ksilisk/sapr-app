@@ -79,4 +79,15 @@ class ValidatorImplTest {
         // then
         Assertions.assertThrows(ValidationException.class, () -> validator.validate(constructionParameters));
     }
+
+    @Test
+    void invalidBarIndInLoadsTest_shouldThrowException() {
+        // given
+        ConstructionParameters constructionParameters = new ConstructionParameters(singletonList(new BarDTO(1, 1, 1)),
+                singletonList(new BarLoadDTO(2, 0)), singletonList(new BarSpecDTO(1, 1)),
+                Arrays.asList(new NodeLoadDTO(1, 1), new NodeLoadDTO(2, 1)),
+                true, true);
+        // then
+        Assertions.assertThrows(ValidationException.class, () -> validator.validate(constructionParameters));
+    }
 }
