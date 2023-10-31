@@ -24,7 +24,7 @@ public class MainController {
                     .scene(new Scene(parent))
                     .modality(Modality.WINDOW_MODAL)
                     .build();
-            controller.setCurrentStage(preprocessorStage);
+            controller.setOnCloseEventHandler(preprocessorStage);
             preprocessorStage.show();
         } catch (Exception e) {
             log.error("Error while process button action in Main View. Action: {}", event.getSource(), e);

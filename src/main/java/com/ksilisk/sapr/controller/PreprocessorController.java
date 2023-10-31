@@ -26,8 +26,6 @@ import java.util.ResourceBundle;
 import static javafx.scene.control.cell.TextFieldTableCell.forTableColumn;
 
 public class PreprocessorController implements Initializable {
-    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(PreprocessorController.class);
-
     @FXML
     private TableView<BarDTO> barView;
     @FXML
@@ -61,11 +59,6 @@ public class PreprocessorController implements Initializable {
     @FXML
     private CheckBox left, right;
     private final PreprocessorService preprocessorService = PreprocessorService.getInstance();
-    private Stage currentStage;
-
-    public void setCurrentStage(Stage currentStage) {
-        this.currentStage = currentStage;
-    }
 
     public void draw() {
         preprocessorService.createDraw(getParameters());
@@ -78,6 +71,10 @@ public class PreprocessorController implements Initializable {
     public void upload(MouseEvent event) {
         preprocessorService.upload(((Button) event.getSource()).getScene().getWindow())
                 .ifPresent(this::setParameters);
+    }
+
+    public void setOnCloseEventHandler(Stage preprocessorStage) {
+        preprocessorStage.setOnCloseRequest(new PreprocessorCloseEventHandler(this::getParameters));
     }
 
     private void setParameters(ConstructionParameters constructionParameters) {
@@ -100,7 +97,6 @@ public class PreprocessorController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        currentStage.setOnCloseRequest(new PreprocessorCloseEventHandler(this::getParameters));
         initColumns();
         initButtons();
     }
