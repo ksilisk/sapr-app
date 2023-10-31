@@ -1,7 +1,6 @@
 package com.ksilisk.sapr.payload;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.ksilisk.sapr.dto.BarDTO;
 import com.ksilisk.sapr.dto.BarLoadDTO;
 import com.ksilisk.sapr.dto.BarSpecDTO;

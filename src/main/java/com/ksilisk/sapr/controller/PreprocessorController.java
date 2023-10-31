@@ -4,10 +4,10 @@ import com.ksilisk.sapr.dto.BarDTO;
 import com.ksilisk.sapr.dto.BarLoadDTO;
 import com.ksilisk.sapr.dto.BarSpecDTO;
 import com.ksilisk.sapr.dto.NodeLoadDTO;
+import com.ksilisk.sapr.handler.PreprocessorCloseEventHandler;
 import com.ksilisk.sapr.handler.RowDeleteEventHandler;
 import com.ksilisk.sapr.payload.ConstructionParameters;
 import com.ksilisk.sapr.service.PreprocessorService;
-import com.ksilisk.sapr.validate.ValidatorImpl;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -16,15 +16,11 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.DirectoryChooser;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.converter.DoubleStringConverter;
 import javafx.util.converter.IntegerStringConverter;
 
-import java.io.File;
 import java.net.URL;
-import java.util.Collections;
 import java.util.ResourceBundle;
 
 import static javafx.scene.control.cell.TextFieldTableCell.forTableColumn;
@@ -64,30 +60,24 @@ public class PreprocessorController implements Initializable {
     private Button delBar, delBarLoad, delBarSpec, delNodeLoad;
     @FXML
     private CheckBox left, right;
-    private final FileChooser fileChooser = new FileChooser();
-    private final DirectoryChooser directoryChooser = new DirectoryChooser();
-    private PreprocessorService preprocessorService;
+    private final PreprocessorService preprocessorService = PreprocessorService.getInstance();
+    private Stage currentStage;
+
+    public void setCurrentStage(Stage currentStage) {
+        this.currentStage = currentStage;
+    }
 
     public void draw() {
         preprocessorService.createDraw(getParameters());
     }
 
     public void save(MouseEvent event) {
-        Button button = (Button) event.getSource();
-        Stage currentStage = (Stage) button.getScene().getWindow();
-        File chosenDir = directoryChooser.showDialog(currentStage);
-        if (chosenDir != null) {
-            preprocessorService.safe(getParameters(), chosenDir);
-        }
+        preprocessorService.save(getParameters(), ((Button) event.getSource()).getScene().getWindow());
     }
 
     public void upload(MouseEvent event) {
-        Button button = (Button) event.getSource();
-        Stage currentStage = (Stage) button.getScene().getWindow();
-        File chosenFile = fileChooser.showOpenDialog(currentStage);
-        if (chosenFile != null) {
-            preprocessorService.upload(chosenFile).ifPresent(this::setParameters);
-        }
+        preprocessorService.upload(((Button) event.getSource()).getScene().getWindow())
+                .ifPresent(this::setParameters);
     }
 
     private void setParameters(ConstructionParameters constructionParameters) {
@@ -110,14 +100,7 @@ public class PreprocessorController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        File userHomeDir = new File(System.getProperty("user.home"));
-        directoryChooser.setInitialDirectory(userHomeDir);
-        directoryChooser.setTitle("Choose Directory");
-        fileChooser.setInitialDirectory(userHomeDir);
-        fileChooser.getExtensionFilters()
-                .add(new FileChooser.ExtensionFilter("Json extension filter", Collections.singletonList("*.json")));
-        fileChooser.setTitle("Choose File");
-        preprocessorService = new PreprocessorService(new ValidatorImpl());
+        currentStage.setOnCloseRequest(new PreprocessorCloseEventHandler(this::getParameters));
         initColumns();
         initButtons();
     }

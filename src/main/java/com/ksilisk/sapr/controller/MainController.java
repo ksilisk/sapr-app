@@ -2,11 +2,9 @@ package com.ksilisk.sapr.controller;
 
 import com.ksilisk.sapr.builder.StageBuilder;
 import com.ksilisk.sapr.config.SaprBarConfig;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -16,17 +14,17 @@ public class MainController {
 
     private final SaprBarConfig saprBarConfig = SaprBarConfig.getInstance();
 
-    @FXML
-    private Button preProcessor, processor, postProcessor;
-
     public void preprocessor(MouseEvent event) {
         try {
-            Parent parent = FXMLLoader.load(saprBarConfig.getPreProcessorViewFile().toURI().toURL());
+            FXMLLoader loader = new FXMLLoader(saprBarConfig.getPreProcessorViewFile().toURI().toURL());
+            Parent parent = loader.load();
+            PreprocessorController controller = loader.getController();
             Stage preprocessorStage = new StageBuilder()
                     .title("Preprocessor")
                     .scene(new Scene(parent))
                     .modality(Modality.WINDOW_MODAL)
                     .build();
+            controller.setCurrentStage(preprocessorStage);
             preprocessorStage.show();
         } catch (Exception e) {
             log.error("Error while process button action in Main View. Action: {}", event.getSource(), e);

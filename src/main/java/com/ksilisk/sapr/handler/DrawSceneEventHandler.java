@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 import static javafx.scene.input.KeyCode.DOWN;
 import static javafx.scene.input.KeyCode.RIGHT;
 
-public class ScaleSceneEventHandler implements EventHandler<KeyEvent> {
+public class DrawSceneEventHandler implements EventHandler<KeyEvent> {
     private static final int SHIFT_STEP = 10;
 
     @Override
