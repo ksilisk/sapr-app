@@ -78,6 +78,9 @@ public class PreprocessorController implements Initializable {
     }
 
     private void setParameters(ConstructionParameters constructionParameters) {
+        if (constructionParameters == null) {
+            return;
+        }
         barView.getItems().clear();
         barView.getItems().addAll(constructionParameters.bars());
         barLoadsView.getItems().clear();
@@ -97,6 +100,7 @@ public class PreprocessorController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        setParameters(preprocessorService.getLastSavedParameters());
         initColumns();
         initButtons();
     }

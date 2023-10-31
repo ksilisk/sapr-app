@@ -34,6 +34,25 @@ public class BarLoadDTO {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        BarLoadDTO that = (BarLoadDTO) obj;
+        if (that.barQx != barQx) return false;
+        return that.barInd == barInd;
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = barInd;
+        temp = Double.doubleToLongBits(barQx);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "BarLoadDTO{" +
                 "barInd=" + barInd +

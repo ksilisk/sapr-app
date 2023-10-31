@@ -45,6 +45,28 @@ public class BarDTO {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        BarDTO barDTO = (BarDTO) obj;
+        if (barDTO.area != area) return false;
+        if (barDTO.specInd != specInd) return false;
+        return barDTO.length == length;
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        temp = Double.doubleToLongBits(length);
+        result = (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(area);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + specInd;
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "BarDTO{" +
                 "length=" + length +

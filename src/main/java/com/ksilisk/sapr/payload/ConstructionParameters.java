@@ -8,6 +8,8 @@ import com.ksilisk.sapr.dto.NodeLoadDTO;
 
 import java.util.List;
 
+import static com.ksilisk.sapr.utils.CollectionsUtils.equalLists;
+
 public record ConstructionParameters(
         @JsonProperty("bars")
         List<BarDTO> bars,
@@ -21,4 +23,17 @@ public record ConstructionParameters(
         boolean leftSupport,
         @JsonProperty("right_support")
         boolean rightSupport) {
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ConstructionParameters that = (ConstructionParameters) o;
+        if (leftSupport != that.leftSupport) return false;
+        if (rightSupport != that.rightSupport) return false;
+        if (!equalLists(that.bars, bars)) return false;
+        if (!equalLists(that.barLoads, barLoads)) return false;
+        if (!equalLists(that.barSpecs, barSpecs)) return false;
+        return equalLists(that.nodeLoads, nodeLoads);
+    }
 }

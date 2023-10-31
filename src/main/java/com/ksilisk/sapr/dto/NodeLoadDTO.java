@@ -34,6 +34,25 @@ public class NodeLoadDTO {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        NodeLoadDTO that = (NodeLoadDTO) obj;
+        if (that.getNodeFx() != nodeFx) return false;
+        return that.getNodeInd() == nodeInd;
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = nodeInd;
+        temp = Double.doubleToLongBits(nodeFx);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "NodeLoadDTO{" +
                 "nodeInd=" + nodeInd +

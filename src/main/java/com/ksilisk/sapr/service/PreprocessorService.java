@@ -97,10 +97,10 @@ public class PreprocessorService {
             try (BufferedWriter bufferedWriter = Files.newBufferedWriter(currentFilePath)) {
                 bufferedWriter.write(jsonParams);
             }
-            lastSavedParameters = constructionParameters;
+            lastSavedParameters = om.readValue(jsonParams, ConstructionParameters.class);
         } catch (ValidationException e) {
             log.error("Validate construction error. Construction params: {}", constructionParameters, e);
-            new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK);
+            new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK).show();
         } catch (Exception e) {
             log.error("Error while safe construction", e);
             new Alert(Alert.AlertType.ERROR, "Internal Application Error. Try Again!", ButtonType.OK).show();
@@ -134,7 +134,7 @@ public class PreprocessorService {
             try (BufferedReader reader = Files.newBufferedReader(file.toPath())) {
                 reader.lines().forEach(jsonParams::append);
                 ConstructionParameters constructionParameters = om.readValue(jsonParams.toString(), ConstructionParameters.class);
-                lastSavedParameters = constructionParameters;
+                lastSavedParameters = om.readValue(jsonParams.toString(), ConstructionParameters.class);
                 return Optional.of(constructionParameters);
             } catch (JsonProcessingException e) {
                 log.error("Error while pars params from file. Json params: {}", jsonParams, e);
@@ -154,8 +154,8 @@ public class PreprocessorService {
         return INSTANCE;
     }
 
-    public synchronized boolean compareParameter(ConstructionParameters currentParameter) {
-        return lastSavedParameters.equals(currentParameter);
+    public synchronized ConstructionParameters getLastSavedParameters() {
+        return lastSavedParameters;
     }
 
     private void prepareParameters(ConstructionParameters parameters) {

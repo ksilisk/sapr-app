@@ -34,6 +34,26 @@ public class BarSpecDTO {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        BarSpecDTO that = (BarSpecDTO) obj;
+        if (that.getPermisVolt() != permisVolt) return false;
+        return that.getElasticMod() == elasticMod;
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        temp = Double.doubleToLongBits(elasticMod);
+        result = (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(permisVolt);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "BarSpecDTO{" +
                 "elasticMod=" + elasticMod +

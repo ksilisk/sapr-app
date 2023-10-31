@@ -20,7 +20,10 @@ public class PreprocessorCloseEventHandler implements EventHandler<WindowEvent> 
 
     @Override
     public void handle(WindowEvent event) {
-        if (!preprocessorService.compareParameter(parametersSupplier.get())) {
+        if (preprocessorService.getLastSavedParameters() == null) {
+            return;
+        }
+        if (!preprocessorService.getLastSavedParameters().equals(parametersSupplier.get())) {
             Alert alert = new Alert(Alert.AlertType.WARNING, "Вы не сохранили измнения. Хотите сохранить?", ButtonType.YES, ButtonType.NO);
             Optional<ButtonType> buttonType = alert.showAndWait();
             if (buttonType.isEmpty()) {
