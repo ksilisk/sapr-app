@@ -12,7 +12,7 @@ import java.util.function.Supplier;
 
 public class PreprocessorCloseEventHandler implements EventHandler<WindowEvent> {
     private final Supplier<ConstructionParameters> parametersSupplier;
-    private final ConstructionStorage constructionStorage = ConstructionStorage.INSTANCE;
+    private final ConstructionStorage storage = ConstructionStorage.INSTANCE;
 
     public PreprocessorCloseEventHandler(Supplier<ConstructionParameters> parametersSupplier) {
         this.parametersSupplier = parametersSupplier;
@@ -20,11 +20,9 @@ public class PreprocessorCloseEventHandler implements EventHandler<WindowEvent> 
 
     @Override
     public void handle(WindowEvent event) {
-        if (constructionStorage.getParameters() == null) {
-            return;
-        }
-        if (!constructionStorage.getParameters().equals(parametersSupplier.get())) {
-            Alert alert = new Alert(Alert.AlertType.WARNING, "Вы не сохранили измнения. Хотите сохранить?", ButtonType.YES, ButtonType.NO);
+        if (!parametersSupplier.get().equals(storage.getParameters())) {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Вы не сохранили измнения. Хотите сохранить?",
+                    ButtonType.YES, ButtonType.NO);
             Optional<ButtonType> buttonType = alert.showAndWait();
             if (buttonType.isEmpty()) {
                 event.consume();

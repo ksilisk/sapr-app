@@ -40,15 +40,15 @@ class CollectionsUtilsTest {
 
     @Test
     void equalListsTest5() {
-        List<BarDTO> barDTOS = asList(new BarDTO(1,1,1), new BarDTO(1,2,1));
-        List<BarDTO> barDTOS1 = asList(new BarDTO(1,2,3), new BarDTO(1,4,5));
+        List<BarDTO> barDTOS = asList(new BarDTO(1, 1, 1), new BarDTO(1, 2, 1));
+        List<BarDTO> barDTOS1 = asList(new BarDTO(1, 2, 3), new BarDTO(1, 4, 5));
         assertFalse(equalLists(barDTOS1, barDTOS));
     }
 
     @Test
-    void test() {
-        BarDTO barDTO = new BarDTO(1,1,1);
-        BarDTO barDTO1 = new BarDTO(1,1,1);
+    void equalListsTest6() {
+        BarDTO barDTO = new BarDTO(1, 1, 1);
+        BarDTO barDTO1 = new BarDTO(1, 1, 1);
         Assertions.assertEquals(barDTO1.hashCode(), barDTO.hashCode());
     }
 }

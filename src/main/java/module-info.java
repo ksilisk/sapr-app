@@ -9,6 +9,7 @@ module com.ksilisk.sapr {
     requires com.fasterxml.jackson.annotation;
     requires com.fasterxml.jackson.core;
     requires com.fasterxml.jackson.databind;
+    requires commons.math3;
     requires com.fasterxml.jackson.dataformat.xml;
 
     opens com.ksilisk.sapr to javafx.fxml;

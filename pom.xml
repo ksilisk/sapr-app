@@ -18,6 +18,7 @@
         <ikonli.version>12.3.1</ikonli.version>
         <slf4j.version>2.0.9</slf4j.version>
         <logback.version>1.4.11</logback.version>
+        <apache.math.version>3.6.1</apache.math.version>
     </properties>
 
     <dependencies>
@@ -66,6 +67,11 @@
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <version>${logback.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-math3</artifactId>
+            <version>${apache.math.version}</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>

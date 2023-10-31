@@ -43,12 +43,20 @@ public class PreprocessorService {
     private static PreprocessorService INSTANCE;
 
     private final ObjectMapper om = new ObjectMapper();
+    private final DirectoryChooser dirChooser = new DirectoryChooser();
+    private final FileChooser fileChooser = new FileChooser();
     private final ConstructionStorage storage = ConstructionStorage.INSTANCE;
     private final Validator validator;
     private Path currentFilePath;
 
     private PreprocessorService(Validator validator) {
         this.validator = validator;
+        dirChooser.setInitialDirectory(USER_HOME_DIRECTORY);
+        dirChooser.setTitle("Choose Directory to save construction");
+        fileChooser.setInitialDirectory(USER_HOME_DIRECTORY);
+        fileChooser.getExtensionFilters()
+                .add(new FileChooser.ExtensionFilter("Json extension filter", Collections.singletonList("*.json")));
+        fileChooser.setTitle("Choose File");
     }
 
     public void createDraw(ConstructionParameters constructionParameters) {
@@ -108,10 +116,7 @@ public class PreprocessorService {
     }
 
     private Path getNewFilePath(Window currentStage) {
-        DirectoryChooser directoryChooser = new DirectoryChooser();
-        directoryChooser.setInitialDirectory(USER_HOME_DIRECTORY);
-        directoryChooser.setTitle("Choose Directory to save construction");
-        File chosenDirectory = directoryChooser.showDialog(currentStage);
+        File chosenDirectory = dirChooser.showDialog(currentStage);
         if (chosenDirectory != null) {
             String fileName = SAVING_CONSTRUCTION_FILE_NAME + "_" +
                     LocalDateTime.now().format(ISO_DATE_TIME) + CONSTRUCTION_FILE_EXTENSION;
@@ -121,23 +126,19 @@ public class PreprocessorService {
     }
 
     public synchronized Optional<ConstructionParameters> upload(Window currentWindow) {
-        log.info("Load construction parameters from file");
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setInitialDirectory(USER_HOME_DIRECTORY);
-        fileChooser.getExtensionFilters()
-                .add(new FileChooser.ExtensionFilter("Json extension filter", Collections.singletonList("*.json")));
-        fileChooser.setTitle("Choose File");
-        File file = fileChooser.showOpenDialog(currentWindow);
-        if (file != null) {
-            currentFilePath = file.toPath();
+        log.info("Try upload construction parameters");
+        File chosenFile = fileChooser.showOpenDialog(currentWindow);
+        if (chosenFile != null) {
+            currentFilePath = chosenFile.toPath();
+            log.info("Upload parameters from file. File path: {}", currentFilePath);
             StringBuilder jsonParams = new StringBuilder();
-            try (BufferedReader reader = Files.newBufferedReader(file.toPath())) {
+            try (BufferedReader reader = Files.newBufferedReader(chosenFile.toPath())) {
                 reader.lines().forEach(jsonParams::append);
                 ConstructionParameters constructionParameters = om.readValue(jsonParams.toString(), ConstructionParameters.class);
                 storage.setParameters(constructionParameters);
                 return Optional.of(constructionParameters);
             } catch (JsonProcessingException e) {
-                log.error("Error while pars params from file. Json params: {}", jsonParams, e);
+                log.error("Error while parsing params from file. Loaded params: {}", jsonParams, e);
                 new Alert(Alert.AlertType.ERROR, "File is invalid. Parsing error.", ButtonType.OK).show();
             } catch (IOException e) {
                 log.error("Error while read params from file.", e);
