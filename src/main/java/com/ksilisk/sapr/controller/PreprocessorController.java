@@ -7,6 +7,7 @@ import com.ksilisk.sapr.dto.NodeLoadDTO;
 import com.ksilisk.sapr.handler.PreprocessorCloseEventHandler;
 import com.ksilisk.sapr.handler.RowDeleteEventHandler;
 import com.ksilisk.sapr.payload.ConstructionParameters;
+import com.ksilisk.sapr.service.ConstructionStorage;
 import com.ksilisk.sapr.service.PreprocessorService;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -58,6 +59,7 @@ public class PreprocessorController implements Initializable {
     private Button delBar, delBarLoad, delBarSpec, delNodeLoad;
     @FXML
     private CheckBox left, right;
+    private final ConstructionStorage storage = ConstructionStorage.INSTANCE;
     private final PreprocessorService preprocessorService = PreprocessorService.getInstance();
 
     public void draw() {
@@ -100,7 +102,7 @@ public class PreprocessorController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        setParameters(preprocessorService.getLastSavedParameters());
+        setParameters(storage.getParameters());
         initColumns();
         initButtons();
     }

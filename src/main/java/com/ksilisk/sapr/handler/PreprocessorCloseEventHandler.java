@@ -1,7 +1,7 @@
 package com.ksilisk.sapr.handler;
 
 import com.ksilisk.sapr.payload.ConstructionParameters;
-import com.ksilisk.sapr.service.PreprocessorService;
+import com.ksilisk.sapr.service.ConstructionStorage;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -12,7 +12,7 @@ import java.util.function.Supplier;
 
 public class PreprocessorCloseEventHandler implements EventHandler<WindowEvent> {
     private final Supplier<ConstructionParameters> parametersSupplier;
-    private final PreprocessorService preprocessorService = PreprocessorService.getInstance();
+    private final ConstructionStorage constructionStorage = ConstructionStorage.INSTANCE;
 
     public PreprocessorCloseEventHandler(Supplier<ConstructionParameters> parametersSupplier) {
         this.parametersSupplier = parametersSupplier;
@@ -20,10 +20,10 @@ public class PreprocessorCloseEventHandler implements EventHandler<WindowEvent> 
 
     @Override
     public void handle(WindowEvent event) {
-        if (preprocessorService.getLastSavedParameters() == null) {
+        if (constructionStorage.getParameters() == null) {
             return;
         }
-        if (!preprocessorService.getLastSavedParameters().equals(parametersSupplier.get())) {
+        if (!constructionStorage.getParameters().equals(parametersSupplier.get())) {
             Alert alert = new Alert(Alert.AlertType.WARNING, "Вы не сохранили измнения. Хотите сохранить?", ButtonType.YES, ButtonType.NO);
             Optional<ButtonType> buttonType = alert.showAndWait();
             if (buttonType.isEmpty()) {

@@ -42,10 +42,10 @@ public class PreprocessorService {
     private static final String CONSTRUCTION_FILE_EXTENSION = ".json";
     private static PreprocessorService INSTANCE;
 
-    private final Validator validator;
     private final ObjectMapper om = new ObjectMapper();
+    private final ConstructionStorage storage = ConstructionStorage.INSTANCE;
+    private final Validator validator;
     private Path currentFilePath;
-    private ConstructionParameters lastSavedParameters;
 
     private PreprocessorService(Validator validator) {
         this.validator = validator;
@@ -97,7 +97,7 @@ public class PreprocessorService {
             try (BufferedWriter bufferedWriter = Files.newBufferedWriter(currentFilePath)) {
                 bufferedWriter.write(jsonParams);
             }
-            lastSavedParameters = om.readValue(jsonParams, ConstructionParameters.class);
+            storage.setParameters(constructionParameters);
         } catch (ValidationException e) {
             log.error("Validate construction error. Construction params: {}", constructionParameters, e);
             new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK).show();
@@ -134,7 +134,7 @@ public class PreprocessorService {
             try (BufferedReader reader = Files.newBufferedReader(file.toPath())) {
                 reader.lines().forEach(jsonParams::append);
                 ConstructionParameters constructionParameters = om.readValue(jsonParams.toString(), ConstructionParameters.class);
-                lastSavedParameters = om.readValue(jsonParams.toString(), ConstructionParameters.class);
+                storage.setParameters(constructionParameters);
                 return Optional.of(constructionParameters);
             } catch (JsonProcessingException e) {
                 log.error("Error while pars params from file. Json params: {}", jsonParams, e);
@@ -152,10 +152,6 @@ public class PreprocessorService {
             INSTANCE = new PreprocessorService(new ValidatorImpl());
         }
         return INSTANCE;
-    }
-
-    public synchronized ConstructionParameters getLastSavedParameters() {
-        return lastSavedParameters;
     }
 
     private void prepareParameters(ConstructionParameters parameters) {
