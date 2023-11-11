@@ -1,91 +1,119 @@
 package com.ksilisk.sapr.service;
 
+import com.ksilisk.sapr.calculator.Calculator;
+import com.ksilisk.sapr.calculator.impl.LongitudinalForceCalculation;
+import com.ksilisk.sapr.calculator.impl.MovementCalculation;
+import com.ksilisk.sapr.calculator.impl.NormalVoltageCalculation;
 import com.ksilisk.sapr.payload.Bar;
 import com.ksilisk.sapr.payload.Construction;
 import com.ksilisk.sapr.payload.Node;
-import org.apache.commons.math3.geometry.Vector;
-import org.apache.commons.math3.geometry.euclidean.twod.Euclidean2D;
-import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
-import org.apache.commons.math3.linear.DecompositionSolver;
-import org.apache.commons.math3.linear.MatrixUtils;
+import org.apache.commons.math3.linear.LUDecomposition;
 import org.apache.commons.math3.linear.RealMatrix;
-import org.apache.commons.math3.linear.SingularValueDecomposition;
 
 import java.util.List;
 
+import static org.apache.commons.math3.linear.MatrixUtils.createRealMatrix;
+
 public class ProcessorService {
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(PreprocessorService.class);
     private static ProcessorService INSTANCE;
+    private final CalculatorStorage calculatorStorage = CalculatorStorage.INSTANCE;
+    private final ConstructionStorage constructionStorage = ConstructionStorage.INSTANCE;
 
-    public double calculate(Construction construction) {
-
-        return 0;
-    }
-
-    private double generateDeltas(List<Bar> bars, List<Node> nodes, boolean left, boolean right) {
-        int count = bars.size();
-        double[][] A = generateReactionMatrix(bars, left, right);
-        double[] B = generateReactionGlobalVector(bars, nodes, left, right);
-        RealMatrix matrix = MatrixUtils.createRealMatrix(A);
-        RealMatrix inverse = MatrixUtils.inverse(matrix);
-        SingularValueDecomposition svd = new SingularValueDecomposition(matrix);
-        DecompositionSolver ds=svd.getSolver();
-        ds.solve(matrix);
-//        Vector<Euclidean2D> doubleVector = new Vector2D(A);
-//        doubleVector.dotProduct()
-        return 0;
-    }
-
-    private double[][] generateReactionMatrix(List<Bar> bars, boolean left, boolean right) {
-        int count = bars.size();
-        double[][] A = new double[count + 1][count + 1];
-        for (int i = 0; i < bars.size(); i++) {
-            Bar bar = bars.get(i);
-            A[i][i] += bar.getArea() * bar.getElasticMod() / bar.getLength();
-            A[i][i + 1] -= bar.getArea() * bar.getElasticMod() / bar.getLength();
-            A[i + 1][i] -= bar.getArea() * bar.getElasticMod() / bar.getLength();
-            A[i + 1][i + 1] += bar.getArea() * bar.getElasticMod() / bar.getLength();
-        }
-        if (left) {
-            A[0][0] = 1;
-            A[1][0] = 0;
-            A[0][1] = 0;
-        }
-        if (right) {
-            A[count][count] = 1;
-            A[count - 1][count] = 0;
-            A[count][count - 1] = 0;
-        }
-        return A;
-    }
-
-    private double[] generateReactionGlobalVector(List<Bar> bars, List<Node> nodes, boolean left, boolean right) {
-        int count = bars.size();
-        double[] knots = new double[count + 1];
-        for (int i = 0; i < count; i++) {
-            knots[i + 1] = nodes.get(i).getXLoad();
-        }
-        double[] B = new double[count + 1];
-        for (int i = 0; i < count + 1; i++) {
-            B[i] += knots[i];
-            if (i != 0) {
-                B[i] += bars.get(i - 1).getPermisVolt() * bars.get(i - 1).getLength() / 2;
-            }
-            if (i != count) {
-                B[i] += bars.get(i).getPermisVolt() * bars.get(i).getLength() / 2;
+    public Calculator process() {
+        Construction construction = Construction.fromParameters(constructionStorage.getParameters());
+        log.info("Start calculating for construction. Construction: {}", construction);
+        int nodeCount = construction.nodes().size();
+        int barCount = nodeCount - 1;
+        List<Double> elasticMods = construction.bars().stream().map(Bar::getElasticMod).toList();
+        List<Double> areas = construction.bars().stream().map(Bar::getArea).toList();
+        List<Double> lengths = construction.bars().stream().map(Bar::getLength).toList();
+        double[] nodeLoads = construction.nodes().stream().mapToDouble(Node::getXLoad).toArray();
+        double[] barLoads = construction.bars().stream().mapToDouble(Bar::getXLoad).toArray();
+        double[][] reactionVectorData = new double[nodeCount][1];
+        double[][] reactionMatrixData = new double[nodeCount][nodeCount];
+        for (int i = 0; i < nodeCount; i++) {
+            for (int j = 0; j < nodeCount; j++) {
+                if (i == j && i > 0 && j > 0 && i < barCount && j < barCount) {
+                    reactionMatrixData[i][j] = (elasticMods.get(i - 1) * areas.get(i - 1)) / lengths.get(i - 1) + (elasticMods.get(j) * areas.get(j)) / lengths.get(j);
+                } else if (i == j + 1) {
+                    reactionMatrixData[i][j] = -(elasticMods.get(j) * areas.get(j)) / lengths.get(j);
+                } else if (j == i + 1) {
+                    reactionMatrixData[i][j] = -(elasticMods.get(i) * areas.get(i)) / lengths.get(i);
+                } else {
+                    reactionMatrixData[i][j] = .0;
+                }
             }
         }
-        if (left) {
-            B[0] = 0;
+        for (int idx = 1; idx < barCount; idx++) {
+            reactionVectorData[idx][0] = nodeLoads[idx] + barLoads[idx] * lengths.get(idx) / 2 + barLoads[idx - 1] * lengths.get(idx - 1) / 2;
         }
-        if (right) {
-            B[count] = 0;
+        if (construction.leftSupport()) {
+            reactionMatrixData[0][0] = 1.0;
+            reactionMatrixData[0][1] = 0.0;
+            reactionMatrixData[1][0] = 0.0;
+            reactionVectorData[0][0] = 0.0;
+        } else {
+            reactionMatrixData[0][0] = (elasticMods.get(0) * areas.get(0)) / lengths.get(0);
+            reactionVectorData[0][0] = nodeLoads[0] + barLoads[0] * lengths.get(0) / 2;
         }
-        return B;
+        if (construction.rightSupport()) {
+            reactionMatrixData[barCount][barCount] = 1.0;
+            reactionMatrixData[barCount - 1][barCount] = 0.0;
+            reactionMatrixData[barCount][barCount - 1] = 0.0;
+            reactionVectorData[barCount][0] = 0.0;
+        } else {
+            reactionMatrixData[barCount][barCount] = (elasticMods.get(barCount - 1) * areas.get(barCount - 1)) / lengths.get(barCount - 1);
+            reactionVectorData[barCount][0] = nodeLoads[barCount] + barLoads[barCount - 1] * lengths.get(barCount - 1) / 2;
+        }
+        RealMatrix reactionMatrix = createRealMatrix(reactionMatrixData);
+        RealMatrix reactionVector = createRealMatrix(reactionVectorData);
+        RealMatrix inverseReactionMatrix = new LUDecomposition(reactionMatrix).getSolver().getInverse();
+        RealMatrix deltaVector = inverseReactionMatrix.multiply(reactionVector);
+
+        double[] uZeros = new double[barCount];
+        double[] uLengths = new double[barCount];
+        for (int idx = 0; idx < barCount; idx++) {
+            uZeros[idx] = deltaVector.getEntry(idx, 0);
+        }
+        System.arraycopy(uZeros, 1, uLengths, 0, barCount - 1);
+        uLengths[barCount - 1] = deltaVector.getEntry(barCount, 0);
+
+        Calculator.CalculatorBuilder calculatorBuilder = Calculator.builder();
+
+        for (int idx = 0; idx < barCount; idx++) {
+            double elasticity = elasticMods.get(idx);
+            double area = areas.get(idx);
+            double length = lengths.get(idx);
+            double nxb = calculateNxb(elasticity, area, length, uZeros[idx], uLengths[idx], barLoads[idx]);
+            double uxa = calculateUxa(elasticity, area, barLoads[idx]);
+            double uxb = calculateUxb(elasticity, area, length, uZeros[idx], uLengths[idx], barLoads[idx]);
+            calculatorBuilder.addMovementCalculation(new MovementCalculation(-barLoads[idx] / areas.get(idx), nxb / areas.get(idx)));
+            calculatorBuilder.addNormalVoltageCalculation(new NormalVoltageCalculation(uxa, uxb, uZeros[idx]));
+            calculatorBuilder.addLongitudinalForcesCalculation(new LongitudinalForceCalculation(-barLoads[idx], nxb));
+
+//            log.info("N" + (idx + 1) + "x: " + Precision.round(-barLoads[idx], 4) + "x + " + Precision.round(nxb, 4));
+//            log.info("U" + (idx + 1) + "x: " + uxa + "x^2 + " + uxb + "x + " + uZeros[idx]);
+//            log.info("Sigma" + (idx + 1) + "x: " + Precision.round(-barLoads[idx] / areas.get(idx), 4) + "x + " + Precision.round(nxb / areas.get(idx), 4) + "\n");
+        }
+        return calculatorBuilder.build();
+    }
+
+    private double calculateNxb(double elasticMod, double area, double length, double Up0, double UpL, double q) {
+        return (elasticMod * area / length) * (UpL - Up0) + q * length / 2;
+    }
+
+    private double calculateUxb(double E, double A, double L, double Up0, double UpL, double q) {
+        return (UpL - Up0 + (q * L * L) / (2 * E * A)) / L;
+    }
+
+    private double calculateUxa(double E, double A, double q) {
+        return -q / (2 * E * A);
     }
 
     public static synchronized ProcessorService getInstance() {
         if (INSTANCE == null) {
-            return new ProcessorService();
+            INSTANCE = new ProcessorService();
         }
         return INSTANCE;
     }

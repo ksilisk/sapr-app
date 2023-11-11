@@ -19,4 +19,6 @@ module com.ksilisk.sapr {
     exports com.ksilisk.sapr.controller;
     exports com.ksilisk.sapr.dto;
     exports com.ksilisk.sapr.payload;
+    exports com.ksilisk.sapr.calculator;
+    exports com.ksilisk.sapr.calculator.impl;
 }
