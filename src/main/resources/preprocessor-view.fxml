@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <VBox alignment="TOP_CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.ksilisk.sapr.controller.PreprocessorController" minHeight="550" minWidth="700">
+      fx:controller="com.ksilisk.sapr.controller.PreprocessorController" minHeight="590" minWidth="700">
     <TabPane>
         <Tab text="Конструкция (CN)" closable="false">
             <HBox alignment="TOP_CENTER" spacing="20">

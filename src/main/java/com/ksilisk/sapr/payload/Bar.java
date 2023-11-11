@@ -49,4 +49,15 @@ public class Bar {
     public void setPermisVolt(double permisVolt) {
         this.permisVolt = permisVolt;
     }
+
+    @Override
+    public String toString() {
+        return "Bar{" +
+                "length=" + length +
+                ", XLoad=" + XLoad +
+                ", area=" + area +
+                ", elasticMod=" + elasticMod +
+                ", permisVolt=" + permisVolt +
+                '}';
+    }
 }

@@ -14,12 +14,6 @@ public class SaprBarConfig {
     private static final String DEFAULT_PRE_PROCESSOR_VIEW_FILE = "preprocessor-view.fxml";
     private static final String DEFAULT_POST_PROCESSOR_VIEW_FILE = "postprocessor-view.fxml";
     private static final String DEFAULT_MAIN_VIEW_FILE = "main-view.fxml";
-    private static final String DEFAULT_PROCESSOR_VIEW_WIDTH = "300";
-    private static final String DEFAULT_PROCESSOR_VIEW_HEIGHT = "200";
-
-    // Views Settings
-    public static final String PROCESSOR_VIEW_WIDTH = "sapr.processor.view.width";
-    public static final String PROCESSOR_VIEW_HEIGHT = "sapr.processor.view.height";
 
     // Configuration files
     public static final String APPLICATION_PROPERTIES_FILE = "sapr-bar.properties";
@@ -84,13 +78,5 @@ public class SaprBarConfig {
 
     public String getApplicationConfigsPath() {
         return properties.getProperty(APPLICATION_CONFIGS_PATH, DEFAULT_APPLICATION_CONFIGS_PATH);
-    }
-
-    public double getProcessorViewWidth() {
-        return Double.parseDouble(properties.getProperty(PROCESSOR_VIEW_WIDTH, DEFAULT_PROCESSOR_VIEW_WIDTH));
-    }
-
-    public double getProcessorViewHeight() {
-        return Double.parseDouble(properties.getProperty(PROCESSOR_VIEW_HEIGHT, DEFAULT_PROCESSOR_VIEW_HEIGHT));
     }
 }

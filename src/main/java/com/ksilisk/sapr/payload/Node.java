@@ -13,4 +13,11 @@ public class Node {
     public void setXLoad(double XLoad) {
         this.XLoad = XLoad;
     }
+
+    @Override
+    public String toString() {
+        return "Node{" +
+                "XLoad=" + XLoad +
+                '}';
+    }
 }
