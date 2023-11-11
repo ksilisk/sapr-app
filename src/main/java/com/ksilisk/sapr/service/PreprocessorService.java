@@ -29,17 +29,17 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Optional;
-
-import static java.time.format.DateTimeFormatter.ISO_DATE_TIME;
 
 public class PreprocessorService {
     private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(PreprocessorService.class);
     private static final String SAVING_CONSTRUCTION_FILE_NAME = "sapr-bar-construction";
     private static final File USER_HOME_DIRECTORY = new File(System.getProperty("user.home"));
     private static final String CONSTRUCTION_FILE_EXTENSION = ".json";
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
     private static PreprocessorService INSTANCE;
 
     private final ObjectMapper om = new ObjectMapper();
@@ -119,7 +119,7 @@ public class PreprocessorService {
         File chosenDirectory = dirChooser.showDialog(currentStage);
         if (chosenDirectory != null) {
             String fileName = SAVING_CONSTRUCTION_FILE_NAME + "_" +
-                    LocalDateTime.now().format(ISO_DATE_TIME) + CONSTRUCTION_FILE_EXTENSION;
+                    LocalDateTime.now().format(FORMATTER) + CONSTRUCTION_FILE_EXTENSION;
             return chosenDirectory.toPath().resolve(fileName);
         }
         return null;
