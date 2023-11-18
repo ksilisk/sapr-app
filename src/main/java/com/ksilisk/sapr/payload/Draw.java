@@ -1,5 +1,6 @@
 package com.ksilisk.sapr.payload;
 
+import com.ksilisk.sapr.config.SaprBarConfig;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
@@ -28,9 +29,7 @@ public class Draw extends Group {
     }
 
     public static class DrawBuilder implements Builder<Draw> {
-        private static final double DEFAULT_DRAW_WIDTH = 700;
-        private static final double DEFAULT_DRAW_HEIGHT = 500;
-        private static final double DEFAULT_MARGIN = 20;
+        private final SaprBarConfig saprBarConfig = SaprBarConfig.getInstance();
         private static final double NODE_LOAD_LENGTH = 25;
         private static final double MIN_BAR_LENGTH = 60;
         private static final double MIN_BAR_AREA = 30;
@@ -42,9 +41,9 @@ public class Draw extends Group {
         private static final double BAR_LOAD_SUB_VECTOR_LENGTH = 10;
         private final List<Bar> bars = new ArrayList<>();
         private final List<com.ksilisk.sapr.payload.Node> nodes = new ArrayList<>();
-        private double margin = DEFAULT_MARGIN;
-        private double width = DEFAULT_DRAW_WIDTH;
-        private double height = DEFAULT_DRAW_HEIGHT;
+        private double margin = saprBarConfig.getPreprocessorDrawMargin();
+        private double width = saprBarConfig.getPreprocessorDrawWidth();
+        private double height = saprBarConfig.getPreprocessorDrawHeight();
         private boolean leftSupport;
         private boolean rightSupport;
 
@@ -180,8 +179,8 @@ public class Draw extends Group {
         }
 
         private Rectangle createBar(double x, Bar bar) {
-            double barLength = bar.getLength();
-            double barArea = bar.getArea();
+            double barLength = bar.getLength() * 100;
+            double barArea = bar.getArea() * 50;
             if (barLength >= width) {
                 barLength = width / 2;
             }

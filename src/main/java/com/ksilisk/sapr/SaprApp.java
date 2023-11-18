@@ -21,6 +21,8 @@ public class SaprApp extends Application {
 //7. Добавить отрисовку qx для стержня (fixed)
 //7. Убрать fy, qy (fixed)
 //8. Исправить опечатки (fixed)
+//9. Добавить подгрузку дефолтных настроек отрисовки из конфига приложени
+//10. Уйти от DirectoryChooser на FileChooser.showSaveDialog
     @Override
     public void init() throws Exception {
         SaprBarConfig.load(getParameters().getNamed());

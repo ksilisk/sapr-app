@@ -14,10 +14,18 @@ public class SaprBarConfig {
     private static final String DEFAULT_PRE_PROCESSOR_VIEW_FILE = "preprocessor-view.fxml";
     private static final String DEFAULT_POST_PROCESSOR_VIEW_FILE = "postprocessor-view.fxml";
     private static final String DEFAULT_MAIN_VIEW_FILE = "main-view.fxml";
+    private static final String DEFAULT_PREPROCESSOR_DRAW_HEIGHT = "500";
+    private static final String DEFAULT_PREPROCESSOR_DRAW_WIDTH = "700";
+    private static final String DEFAULT_PREPROCESSOR_DRAW_MARGIN = "20";
 
     // Configuration files
     public static final String APPLICATION_PROPERTIES_FILE = "sapr-bar.properties";
     public static final String APPLICATION_CONFIGS_PATH = "configs-path";
+
+    // Preprocessor Configs
+    public static final String PREPROCESSOR_DRAW_HEIGHT = "sapr.preprocessor.draw.height";
+    public static final String PREPROCESSOR_DRAW_WIGHT = "sapr.preprocessor.draw.width";
+    public static final String PREPROCESSOR_DRAW_MARGIN = "sapr.preprocessor.draw.margin";
 
     // Views
     public static final String PROCESSOR_VIEW_FILE = "sapr.processor.view.file";
@@ -78,5 +86,17 @@ public class SaprBarConfig {
 
     public String getApplicationConfigsPath() {
         return properties.getProperty(APPLICATION_CONFIGS_PATH, DEFAULT_APPLICATION_CONFIGS_PATH);
+    }
+
+    public double getPreprocessorDrawHeight() {
+        return Double.parseDouble(properties.getProperty(PREPROCESSOR_DRAW_HEIGHT, DEFAULT_PREPROCESSOR_DRAW_HEIGHT));
+    }
+
+    public double getPreprocessorDrawWidth() {
+        return Double.parseDouble(properties.getProperty(PREPROCESSOR_DRAW_WIGHT, DEFAULT_PREPROCESSOR_DRAW_WIDTH));
+    }
+
+    public double getPreprocessorDrawMargin() {
+        return Double.parseDouble(properties.getProperty(PREPROCESSOR_DRAW_MARGIN, DEFAULT_PREPROCESSOR_DRAW_MARGIN));
     }
 }

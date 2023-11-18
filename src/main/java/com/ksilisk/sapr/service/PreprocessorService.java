@@ -3,6 +3,7 @@ package com.ksilisk.sapr.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ksilisk.sapr.builder.StageBuilder;
+import com.ksilisk.sapr.config.SaprBarConfig;
 import com.ksilisk.sapr.dto.BarLoadDTO;
 import com.ksilisk.sapr.dto.NodeLoadDTO;
 import com.ksilisk.sapr.handler.DrawSceneEventHandler;
@@ -17,7 +18,6 @@ import javafx.scene.ParallelCamera;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Window;
@@ -28,22 +28,18 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
 
 public class PreprocessorService {
     private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(PreprocessorService.class);
-    private static final String SAVING_CONSTRUCTION_FILE_NAME = "sapr-bar-construction";
     private static final File USER_HOME_DIRECTORY = new File(System.getProperty("user.home"));
-    private static final String CONSTRUCTION_FILE_EXTENSION = ".json";
-    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
+    private static final List<String> CONSTRUCTION_FILE_EXTENSIONS = List.of("*.json");
     private static PreprocessorService INSTANCE;
 
+    private final SaprBarConfig saprBarConfig = SaprBarConfig.getInstance();
     private final ObjectMapper om = new ObjectMapper();
-    private final DirectoryChooser dirChooser = new DirectoryChooser();
     private final FileChooser fileChooser = new FileChooser();
     private final ConstructionStorage storage = ConstructionStorage.INSTANCE;
     private final Validator validator;
@@ -51,11 +47,9 @@ public class PreprocessorService {
 
     private PreprocessorService(Validator validator) {
         this.validator = validator;
-        dirChooser.setInitialDirectory(USER_HOME_DIRECTORY);
-        dirChooser.setTitle("Choose Directory to save construction");
         fileChooser.setInitialDirectory(USER_HOME_DIRECTORY);
         fileChooser.getExtensionFilters()
-                .add(new FileChooser.ExtensionFilter("Json extension filter", Collections.singletonList("*.json")));
+                .add(new FileChooser.ExtensionFilter("Construction file extensions", CONSTRUCTION_FILE_EXTENSIONS));
         fileChooser.setTitle("Choose File");
     }
 
@@ -71,7 +65,7 @@ public class PreprocessorService {
                     .rightSupport(construction.rightSupport())
                     .build();
             Camera camera = new ParallelCamera();
-            Scene scene = new Scene(draw);
+            Scene scene = new Scene(draw, saprBarConfig.getPreprocessorDrawWidth(), saprBarConfig.getPreprocessorDrawHeight());
             scene.setCamera(camera);
             scene.setOnKeyPressed(new DrawSceneEventHandler());
             new StageBuilder()
@@ -116,11 +110,9 @@ public class PreprocessorService {
     }
 
     private Path getNewFilePath(Window currentStage) {
-        File chosenDirectory = dirChooser.showDialog(currentStage);
+        File chosenDirectory = fileChooser.showSaveDialog(currentStage);
         if (chosenDirectory != null) {
-            String fileName = SAVING_CONSTRUCTION_FILE_NAME + "_" +
-                    LocalDateTime.now().format(FORMATTER) + CONSTRUCTION_FILE_EXTENSION;
-            return chosenDirectory.toPath().resolve(fileName);
+            return chosenDirectory.toPath();
         }
         return null;
     }
