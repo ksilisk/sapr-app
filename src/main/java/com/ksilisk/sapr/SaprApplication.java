@@ -11,7 +11,7 @@ import java.io.IOException;
 
 import static com.ksilisk.sapr.config.SaprBarConfig.APP_NAME;
 
-public class SaprApp extends Application {
+public class SaprApplication extends Application {
     //1. Модуль и допускаемое напряжение больше нуля (fixed)
 //2. Длина и поперечное сечение больше нуля (fixed)
 //3. Как минимум одна опора (fixed)
@@ -37,9 +37,5 @@ public class SaprApp extends Application {
         stage.setTitle(APP_NAME);
         stage.setScene(scene);
         stage.show();
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
 }

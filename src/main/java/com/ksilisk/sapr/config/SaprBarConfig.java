@@ -9,7 +9,7 @@ import java.util.Properties;
 
 public class SaprBarConfig {
     // Defaults
-    public static final String DEFAULT_APPLICATION_CONFIGS_PATH = "config";
+    public static final String DEFAULT_APPLICATION_CONFIGS_PATH = "conf";
     private static final String DEFAULT_PROCESSOR_VIEW_FILE = "processor-view.fxml";
     private static final String DEFAULT_PRE_PROCESSOR_VIEW_FILE = "preprocessor-view.fxml";
     private static final String DEFAULT_POST_PROCESSOR_VIEW_FILE = "postprocessor-view.fxml";
