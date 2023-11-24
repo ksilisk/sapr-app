@@ -7,4 +7,4 @@ APP_CLASSPATH="lib/*"
 
 RUN_COMMAND="java '${LOG_PARAM}' -cp '${APP_CLASSPATH}' com.ksilisk.sapr.Main"
 
-eval ${RUN_COMMAND}
+eval "${RUN_COMMAND}"
