@@ -8,7 +8,7 @@ import static java.util.Comparator.comparingInt;
 
 public class CollectionsUtils {
     private CollectionsUtils() {
-        throw new IllegalStateException("This is Util class. Can't create object");
+        throw new IllegalStateException("This is Utility class. Can't create object");
     }
 
     public static <T> boolean equalLists(List<T> collection, List<T> collection1) {

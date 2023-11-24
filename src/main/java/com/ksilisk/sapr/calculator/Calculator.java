@@ -28,9 +28,9 @@ public class Calculator {
         StringJoiner joiner = new StringJoiner("\n", "Результаты расчета формул для конструкции:\n\n", "");
         for (int barIndex = 0; barIndex < movementsCalculations.size(); barIndex++) {
             joiner.add("Стержень №" + (barIndex + 1));
+            joiner.add(longitudinalForceCalculations.get(barIndex).toString(barIndex + 1));
             joiner.add(movementsCalculations.get(barIndex).toString(barIndex + 1));
             joiner.add(normalVoltageCalculations.get(barIndex).toString(barIndex + 1));
-            joiner.add(longitudinalForceCalculations.get(barIndex).toString(barIndex + 1));
             joiner.add("");
         }
         return joiner.toString();

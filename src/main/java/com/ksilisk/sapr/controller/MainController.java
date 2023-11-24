@@ -57,6 +57,18 @@ public class MainController {
     }
 
     public void postprocessor(MouseEvent event) {
-        // TODO implement this
+        try {
+            FXMLLoader loader = new FXMLLoader(saprBarConfig.getPostProcessorViewFile().toURI().toURL());
+            Scene scene = new Scene(loader.load());
+            Stage stage = new StageBuilder()
+                    .title("postprocessor")
+                    .scene(scene)
+                    .modality(Modality.APPLICATION_MODAL)
+                    .resizable(false)
+                    .build();
+            stage.show();
+        } catch (Exception e) {
+            log.error("error");
+        }
     }
 }

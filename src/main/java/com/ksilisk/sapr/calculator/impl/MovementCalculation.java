@@ -5,7 +5,7 @@ import org.apache.commons.math3.util.Precision;
 
 // Калькулятор перемещений (Ux)
 public class MovementCalculation implements SaprCalculationBiFunction {
-    private static final String FORMATTER = "∂%dx: (%f * x) + (%f)";
+    private static final String FORMATTER = "U%dx: (%f * x) + (%f)";
     private final double firstArg;
     private final double secondArg;
 
