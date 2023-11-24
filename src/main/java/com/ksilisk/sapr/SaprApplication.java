@@ -22,7 +22,7 @@ public class SaprApplication extends Application {
 //7. Убрать fy, qy (fixed)
 //8. Исправить опечатки (fixed)
 //9. Добавить подгрузку дефолтных настроек отрисовки из конфига приложени
-//10. Уйти от DirectoryChooser на FileChooser.showSaveDialog
+//10. Уйти от DirectoryChooser на FileChooser.showSaveDialog (fixed)
     @Override
     public void init() throws Exception {
         SaprBarConfig.load(getParameters().getNamed());

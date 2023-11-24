@@ -7,21 +7,43 @@ import com.ksilisk.sapr.calculator.impl.NormalVoltageCalculation;
 import com.ksilisk.sapr.payload.Bar;
 import com.ksilisk.sapr.payload.Construction;
 import com.ksilisk.sapr.payload.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import org.apache.commons.math3.linear.LUDecomposition;
 import org.apache.commons.math3.linear.RealMatrix;
 
 import java.util.List;
+import java.util.Optional;
 
+import static com.ksilisk.sapr.payload.Construction.fromParameters;
 import static org.apache.commons.math3.linear.MatrixUtils.createRealMatrix;
 
 public class ProcessorService {
     private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(PreprocessorService.class);
     private static ProcessorService INSTANCE;
-    private final CalculatorStorage calculatorStorage = CalculatorStorage.INSTANCE;
     private final ConstructionStorage constructionStorage = ConstructionStorage.INSTANCE;
+    private final CalculatorStorage calculatorStorage = CalculatorStorage.INSTANCE;
 
-    public Calculator process() {
-        Construction construction = Construction.fromParameters(constructionStorage.getParameters());
+    public Optional<String> process() {
+        try {
+            if (constructionStorage.getParameters() == null) {
+                new Alert(Alert.AlertType.WARNING,
+                        "Construction not exists. Create and try again!", ButtonType.OK).show();
+                return Optional.empty();
+            }
+            Construction construction = fromParameters(constructionStorage.getParameters());
+            Calculator calculator = calculate(construction);
+            calculatorStorage.setCalculator(calculator);
+            return Optional.of(calculator.toString());
+        } catch (Exception e) {
+            log.error("Error while process construction calculator. Construction parameters: {}", constructionStorage.getParameters(), e);
+            new Alert(Alert.AlertType.ERROR,
+                    "Internal Application Error. Try again or contact to me.", ButtonType.OK).show();
+        }
+        return Optional.empty();
+    }
+
+    private Calculator calculate(Construction construction) {
         log.info("Start calculating for construction. Construction: {}", construction);
         int nodeCount = construction.nodes().size();
         int barCount = nodeCount - 1;
@@ -66,21 +88,15 @@ public class ProcessorService {
             reactionMatrixData[barCount][barCount] = (elasticMods.get(barCount - 1) * areas.get(barCount - 1)) / lengths.get(barCount - 1);
             reactionVectorData[barCount][0] = nodeLoads[barCount] + barLoads[barCount - 1] * lengths.get(barCount - 1) / 2;
         }
-        RealMatrix reactionMatrix = createRealMatrix(reactionMatrixData);
-        RealMatrix reactionVector = createRealMatrix(reactionVectorData);
-        RealMatrix inverseReactionMatrix = new LUDecomposition(reactionMatrix).getSolver().getInverse();
-        RealMatrix deltaVector = inverseReactionMatrix.multiply(reactionVector);
-
         double[] uZeros = new double[barCount];
         double[] uLengths = new double[barCount];
+        RealMatrix deltaVector = createDeltaMatrix(reactionMatrixData, reactionVectorData);
         for (int idx = 0; idx < barCount; idx++) {
             uZeros[idx] = deltaVector.getEntry(idx, 0);
         }
         System.arraycopy(uZeros, 1, uLengths, 0, barCount - 1);
         uLengths[barCount - 1] = deltaVector.getEntry(barCount, 0);
-
         Calculator.CalculatorBuilder calculatorBuilder = Calculator.builder();
-
         for (int idx = 0; idx < barCount; idx++) {
             double elasticity = elasticMods.get(idx);
             double area = areas.get(idx);
@@ -91,12 +107,15 @@ public class ProcessorService {
             calculatorBuilder.addMovementCalculation(new MovementCalculation(-barLoads[idx] / areas.get(idx), nxb / areas.get(idx)));
             calculatorBuilder.addNormalVoltageCalculation(new NormalVoltageCalculation(uxa, uxb, uZeros[idx]));
             calculatorBuilder.addLongitudinalForcesCalculation(new LongitudinalForceCalculation(-barLoads[idx], nxb));
-
-//            log.info("N" + (idx + 1) + "x: " + Precision.round(-barLoads[idx], 4) + "x + " + Precision.round(nxb, 4));
-//            log.info("U" + (idx + 1) + "x: " + uxa + "x^2 + " + uxb + "x + " + uZeros[idx]);
-//            log.info("Sigma" + (idx + 1) + "x: " + Precision.round(-barLoads[idx] / areas.get(idx), 4) + "x + " + Precision.round(nxb / areas.get(idx), 4) + "\n");
         }
         return calculatorBuilder.build();
+    }
+
+    private RealMatrix createDeltaMatrix(double[][] reactionMatrixData, double[][] reactionVectorData) {
+        RealMatrix reactionMatrix = createRealMatrix(reactionMatrixData);
+        RealMatrix reactionVector = createRealMatrix(reactionVectorData);
+        RealMatrix inverseReactionMatrix = new LUDecomposition(reactionMatrix).getSolver().getInverse();
+        return inverseReactionMatrix.multiply(reactionVector);
     }
 
     private double calculateNxb(double elasticMod, double area, double length, double Up0, double UpL, double q) {

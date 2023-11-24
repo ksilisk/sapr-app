@@ -20,7 +20,7 @@ public class SaprBarConfig {
 
     // Configuration files
     public static final String APPLICATION_PROPERTIES_FILE = "sapr-bar.properties";
-    public static final String APPLICATION_CONFIGS_PATH = "configs-path";
+    public static final String APPLICATION_CONFIGS_PATH = "config.path";
 
     // Preprocessor Configs
     public static final String PREPROCESSOR_DRAW_HEIGHT = "sapr.preprocessor.draw.height";
