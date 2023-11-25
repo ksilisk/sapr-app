@@ -23,17 +23,25 @@ public class Calculator {
                 normalVoltageCalculations.get(barIndex).apply(x, precision));
     }
 
-    @Override
-    public String toString() {
+    public String getStringRepresentation() {
         StringJoiner joiner = new StringJoiner("\n", "Результаты расчета формул для конструкции:\n\n", "");
         for (int barIndex = 0; barIndex < movementsCalculations.size(); barIndex++) {
             joiner.add("Стержень №" + (barIndex + 1));
-            joiner.add(longitudinalForceCalculations.get(barIndex).toString(barIndex + 1));
-            joiner.add(movementsCalculations.get(barIndex).toString(barIndex + 1));
-            joiner.add(normalVoltageCalculations.get(barIndex).toString(barIndex + 1));
+            joiner.add(longitudinalForceCalculations.get(barIndex).stringRepresentation(barIndex + 1));
+            joiner.add(movementsCalculations.get(barIndex).stringRepresentation(barIndex + 1));
+            joiner.add(normalVoltageCalculations.get(barIndex).stringRepresentation(barIndex + 1));
             joiner.add("");
         }
         return joiner.toString();
+    }
+
+    @Override
+    public String toString() {
+        return "Calculator{" +
+                "movementsCalculations=" + movementsCalculations +
+                ", normalVoltageCalculations=" + normalVoltageCalculations +
+                ", longitudinalForceCalculations=" + longitudinalForceCalculations +
+                '}';
     }
 
     public static CalculatorBuilder builder() {

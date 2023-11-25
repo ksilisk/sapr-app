@@ -5,7 +5,7 @@
 <VBox alignment="CENTER" minHeight="625" minWidth="440" spacing="10" xmlns="http://javafx.com/javafx/17.0.2-ea"
       xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ksilisk.sapr.controller.PostprocessorController">
     <Label text="Результаты расчета"/>
-    <TableView fx:id="results" maxWidth="400">
+    <TableView fx:id="resultsView" maxWidth="400">
         <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
         </columnResizePolicy>
@@ -28,20 +28,19 @@
             </HBox>
             <HBox spacing="5" alignment="CENTER_LEFT">
                 <Label text="Шаг дискретизации: "/>
-                <TextField fx:id="shiftStep" maxWidth="70"/>
+                <TextField fx:id="samplingStep" maxWidth="70"/>
             </HBox>
             <HBox spacing="5" alignment="CENTER_LEFT">
-                <Label text="Значение X: "/>
+                <Label text="Расчет в точке X: "/>
                 <TextField fx:id="x" maxWidth="70"/>
                 <Button onMouseClicked="#calculateForX" text="Найти"/>
             </HBox>
             <Button onMouseClicked="#calculate" text="Провести расчеты"/>
         </VBox>
         <VBox alignment="CENTER" spacing="10">
-            <Button onMouseClicked="#drawGraph" text="Отрисовать графики"/>
-            <Button onMouseClicked="#drawDiagram" text="Отрисовать эпюры"/>
+            <Button onMouseClicked="#drawGraph" text="Отрисовать графики" prefWidth="140"/>
+            <Button onMouseClicked="#drawDiagram" text="Отрисовать эпюры" prefWidth="140"/>
             <Button onMouseClicked="#save" text="Сохранить"/>
-            <Button onMouseClicked="#upload" text="Загрузить"/>
         </VBox>
     </HBox>
 </VBox>

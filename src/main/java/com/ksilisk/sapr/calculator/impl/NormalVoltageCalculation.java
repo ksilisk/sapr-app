@@ -23,7 +23,16 @@ public class NormalVoltageCalculation implements SaprCalculationBiFunction {
     }
 
     @Override
-    public String toString(int index) {
+    public String stringRepresentation(int index) {
         return String.format(FORMATTER, index, firstArg, secondArg, thirdArg);
+    }
+
+    @Override
+    public String toString() {
+        return "NormalVoltageCalculation{" +
+                "firstArg=" + firstArg +
+                ", secondArg=" + secondArg +
+                ", thirdArg=" + thirdArg +
+                '}';
     }
 }

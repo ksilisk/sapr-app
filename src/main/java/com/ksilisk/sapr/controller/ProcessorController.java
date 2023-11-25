@@ -5,7 +5,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 
 public class ProcessorController {
-    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(ProcessorController.class);
     private final ProcessorService processorService = ProcessorService.getInstance();
 
     @FXML

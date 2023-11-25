@@ -2,6 +2,7 @@ package com.ksilisk.sapr.controller;
 
 import com.ksilisk.sapr.builder.StageBuilder;
 import com.ksilisk.sapr.config.SaprBarConfig;
+import com.ksilisk.sapr.service.MainService;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -15,6 +16,7 @@ public class MainController {
     private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(MainController.class);
 
     private final SaprBarConfig saprBarConfig = SaprBarConfig.getInstance();
+    private final MainService service = MainService.getInstance();
 
     public void preprocessor(MouseEvent event) {
         try {
@@ -39,6 +41,12 @@ public class MainController {
 
     public void processor(MouseEvent event) {
         try {
+            if (service.isConstructionNotPresent()) {
+                new Alert(Alert.AlertType.WARNING,
+                        "Construction not present. Please create it in Preprocessor and try again!", ButtonType.OK)
+                        .show();
+                return;
+            }
             FXMLLoader loader = new FXMLLoader(saprBarConfig.getProcessorViewFile().toURI().toURL());
             Scene scene = new Scene(loader.load());
             Stage stage = new StageBuilder()
@@ -58,6 +66,18 @@ public class MainController {
 
     public void postprocessor(MouseEvent event) {
         try {
+            if (service.isConstructionNotPresent()) {
+                new Alert(Alert.AlertType.WARNING,
+                        "Construction not present. Please create it in Preprocessor and try again!", ButtonType.OK)
+                        .show();
+                return;
+            }
+            if (service.isCalculatorNotPresent()) {
+                new Alert(Alert.AlertType.WARNING,
+                        "Construction not processed. Process it in Processor and try again!", ButtonType.OK)
+                        .show();
+                return;
+            }
             FXMLLoader loader = new FXMLLoader(saprBarConfig.getPostProcessorViewFile().toURI().toURL());
             Scene scene = new Scene(loader.load());
             Stage stage = new StageBuilder()
@@ -68,7 +88,10 @@ public class MainController {
                     .build();
             stage.show();
         } catch (Exception e) {
-            log.error("error");
+            log.error("Error while process button action (open postprocessor) in Main View. Event: {}", event, e);
+            new Alert(Alert.AlertType.ERROR,
+                    "Internal Application Error. Can't open Postprocessor. \nTry again or send report to me!",
+                    ButtonType.OK).show();
         }
     }
 }

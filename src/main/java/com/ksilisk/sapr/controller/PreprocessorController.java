@@ -27,6 +27,8 @@ import java.util.ResourceBundle;
 import static javafx.scene.control.cell.TextFieldTableCell.forTableColumn;
 
 public class PreprocessorController implements Initializable {
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(PreprocessorController.class);
+
     @FXML
     private TableView<BarDTO> barView;
     @FXML
@@ -108,6 +110,7 @@ public class PreprocessorController implements Initializable {
     }
 
     private void initColumns() {
+        log.info("Start initialize preprocessor controller");
         setCellValueFactories();
         setEditable();
     }

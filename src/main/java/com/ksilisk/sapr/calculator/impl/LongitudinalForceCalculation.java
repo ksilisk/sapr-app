@@ -22,7 +22,15 @@ public class LongitudinalForceCalculation implements SaprCalculationBiFunction {
     }
 
     @Override
-    public String toString(int index) {
+    public String stringRepresentation(int index) {
         return String.format(FORMATTER, index, firstArg, secondArg);
+    }
+
+    @Override
+    public String toString() {
+        return "LongitudinalForceCalculation{" +
+                "firstArg=" + firstArg +
+                ", secondArg=" + secondArg +
+                '}';
     }
 }

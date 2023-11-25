@@ -32,9 +32,10 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
+import static com.ksilisk.sapr.config.SaprBarConfig.USER_HOME_DIRECTORY;
+
 public class PreprocessorService {
     private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(PreprocessorService.class);
-    private static final File USER_HOME_DIRECTORY = new File(System.getProperty("user.home"));
     private static final List<String> CONSTRUCTION_FILE_EXTENSIONS = List.of("*.json");
     private static PreprocessorService INSTANCE;
 
@@ -110,9 +111,9 @@ public class PreprocessorService {
     }
 
     private Path getNewFilePath(Window currentStage) {
-        File chosenDirectory = fileChooser.showSaveDialog(currentStage);
-        if (chosenDirectory != null) {
-            return chosenDirectory.toPath();
+        File chosenFile = fileChooser.showSaveDialog(currentStage);
+        if (chosenFile != null) {
+            return chosenFile.toPath();
         }
         return null;
     }

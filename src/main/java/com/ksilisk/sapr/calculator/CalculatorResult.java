@@ -48,4 +48,14 @@ public class CalculatorResult {
     public void setMovement(double movement) {
         this.movement = movement;
     }
+
+    @Override
+    public String toString() {
+        return "CalculatorResult{" +
+                "movement=" + movement +
+                ", x=" + x +
+                ", longitudinalForce=" + longitudinalForce +
+                ", normalVoltage=" + normalVoltage +
+                '}';
+    }
 }

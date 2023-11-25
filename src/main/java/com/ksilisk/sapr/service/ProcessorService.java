@@ -19,22 +19,17 @@ import static com.ksilisk.sapr.payload.Construction.fromParameters;
 import static org.apache.commons.math3.linear.MatrixUtils.createRealMatrix;
 
 public class ProcessorService {
-    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(PreprocessorService.class);
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(ProcessorService.class);
     private static ProcessorService INSTANCE;
     private final ConstructionStorage constructionStorage = ConstructionStorage.INSTANCE;
     private final CalculatorStorage calculatorStorage = CalculatorStorage.INSTANCE;
 
     public Optional<String> process() {
         try {
-            if (constructionStorage.getParameters() == null) {
-                new Alert(Alert.AlertType.WARNING,
-                        "Construction not exists. Create and try again!", ButtonType.OK).show();
-                return Optional.empty();
-            }
             Construction construction = fromParameters(constructionStorage.getParameters());
             Calculator calculator = calculate(construction);
             calculatorStorage.setCalculator(calculator);
-            return Optional.of(calculator.toString());
+            return Optional.of(calculator.getStringRepresentation());
         } catch (Exception e) {
             log.error("Error while process construction calculator. Construction parameters: {}", constructionStorage.getParameters(), e);
             new Alert(Alert.AlertType.ERROR,
@@ -56,7 +51,7 @@ public class ProcessorService {
         double[][] reactionMatrixData = new double[nodeCount][nodeCount];
         for (int i = 0; i < nodeCount; i++) {
             for (int j = 0; j < nodeCount; j++) {
-                if (i == j && i > 0 && j > 0 && i < barCount && j < barCount) {
+                if (i == j && i > 0 && i < barCount) {
                     reactionMatrixData[i][j] = (elasticMods.get(i - 1) * areas.get(i - 1)) / lengths.get(i - 1) + (elasticMods.get(j) * areas.get(j)) / lengths.get(j);
                 } else if (i == j + 1) {
                     reactionMatrixData[i][j] = -(elasticMods.get(j) * areas.get(j)) / lengths.get(j);

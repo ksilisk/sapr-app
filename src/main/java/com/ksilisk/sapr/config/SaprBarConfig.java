@@ -35,6 +35,7 @@ public class SaprBarConfig {
 
     // Constants
     public static final String APP_NAME = "SAPR-BAR v1.0";
+    public static final File USER_HOME_DIRECTORY = new File(System.getProperty("user.home"));
 
     private static SaprBarConfig INSTANCE;
     private static boolean isLoaded = false;
