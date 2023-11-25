@@ -6,10 +6,10 @@
 * [Deploy](#deploy)
 * [Run](#run)
 ## Description
-Sapr-bar is application for automating strength calculations of rod systems experiencing tension-compression
+Sapr-bar is application for automating strength calculations of rod systems experiencing tension-compression.
 
 ## Features
-Sapr-bar creates the construction and draws it. In addition, he can calculate loads, draw diagrams and graphs
+Sapr-bar creates the construction and draws it. In addition, it can calculate loads, draw diagrams and graphs.
 ### Preprocessor
 * Input of data sets describing construction and external loads
 * Visualization of construction and loads
@@ -31,7 +31,7 @@ Building on `Microsoft Windows` requires using `mvnw.cmd` instead of `mwnw` to r
 Change directory to `build`. This directory contains binary archives.
     
     $ cd build
-Copy `sapr-bar-VERSION-bin.zip` or `sapr-bar-VERSION-bin.tar.gz` to a separate deployment directory. Extracting the distribution will create a new directory named for the version.
+Copy `sapr-bar-VERSION-bin.zip` or `sapr-bar-VERSION-bin.tar.gz` to a separate deployment directory. Extracting the distribution will create a new directory named for the version.<br>
 In addition, the `build` folder will already contain a ready-to-run distribution.
 ## Run
 Change directories to the deployment location or to the `build/sapr-bar-VERSION-bin`<br>
