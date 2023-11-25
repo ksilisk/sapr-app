@@ -15,9 +15,9 @@ Sapr-bar creates the construction and draws it. In addition, it can calculate lo
 * Visualization of construction and loads
 * Generating project file
 ### Processor
-`in progress`
+`description in progress`
 ### Postprocessor
-`in progress`
+`description in progress`
 ## Requirements
 * JDK 17 or higher
 ## Build
