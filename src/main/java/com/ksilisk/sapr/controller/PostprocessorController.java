@@ -58,11 +58,16 @@ public class PostprocessorController implements Initializable {
     }
 
     public void drawGraph(MouseEvent event) {
-        // TODO implement this
+        int barIndex = barIndexes.getValue();
+        int precision = precisions.getValue();
+        String step = samplingStep.getText();
+        service.drawGraph(step, barIndex, precision);
     }
 
     public void drawDiagram(MouseEvent event) {
-        // TODO implement this
+        int precision = precisions.getValue();
+        String step = samplingStep.getText();
+        service.drawDiagram(step, precision);
     }
 
     public void save(MouseEvent event) {

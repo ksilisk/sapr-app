@@ -7,7 +7,7 @@ import com.ksilisk.sapr.dto.NodeLoadDTO;
 import com.ksilisk.sapr.handler.PreprocessorCloseEventHandler;
 import com.ksilisk.sapr.handler.RowDeleteEventHandler;
 import com.ksilisk.sapr.payload.ConstructionParameters;
-import com.ksilisk.sapr.service.ConstructionStorage;
+import com.ksilisk.sapr.storage.ConstructionStorage;
 import com.ksilisk.sapr.service.PreprocessorService;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

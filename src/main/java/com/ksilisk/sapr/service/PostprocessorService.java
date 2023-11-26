@@ -3,10 +3,17 @@ package com.ksilisk.sapr.service;
 import com.ksilisk.sapr.calculator.Calculator;
 import com.ksilisk.sapr.calculator.CalculatorResult;
 import com.ksilisk.sapr.dto.BarDTO;
+import com.ksilisk.sapr.service.impl.DiagramCreatorImpl;
+import com.ksilisk.sapr.service.impl.GraphCreatorImpl;
+import com.ksilisk.sapr.storage.CalculatorStorage;
+import com.ksilisk.sapr.storage.ConstructionStorage;
 import com.ksilisk.sapr.validate.ValidationException;
+import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.apache.commons.math3.util.Precision;
 
@@ -28,6 +35,8 @@ public class PostprocessorService {
     private final CalculatorStorage calculatorStorage = CalculatorStorage.INSTANCE;
     private final ConstructionStorage constructionStorage = ConstructionStorage.INSTANCE;
     private final FileChooser fileChooser = new FileChooser();
+    private final GraphCreator graphCreator = new GraphCreatorImpl();
+    private final DiagramCreator diagramCreator = new DiagramCreatorImpl();
 
     public PostprocessorService() {
         fileChooser.setInitialDirectory(USER_HOME_DIRECTORY);
@@ -109,6 +118,54 @@ public class PostprocessorService {
             joiner.add(resultLine);
         }
         return joiner.toString();
+    }
+
+    // TODO need to refactor
+    public void drawGraph(String shiftStep, int barIndex, int precision) {
+        try {
+            double parsedStep = tryParseDouble(shiftStep);
+            if (parsedStep == 0.0) {
+                throw new ValidationException("Sampling step value can't be null");
+            }
+            int stepPrecision = getNumberPrecision(shiftStep);
+            Calculator calculator = calculatorStorage.getCalculator();
+            double barLength = constructionStorage.getParameters().bars().get(barIndex - 1).getLength();
+            Group group = graphCreator.create(calculator, barIndex - 1, precision, parsedStep, barLength, stepPrecision);
+            Scene scene = new Scene(group);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.setTitle("Graph");
+            stage.show();
+        } catch (ValidationException e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK).show();
+        } catch (Exception e) {
+            log.error("Error while draw graph. Step: {}, Bar ind: {}, Precision: {}", shiftStep, barIndex, precision, e);
+            new Alert(Alert.AlertType.ERROR,
+                    "Internal Application Error. Try again or contact to me.", ButtonType.OK).show();
+        }
+    }
+
+    // TODO need to refactor
+    public void drawDiagram(String shiftStep, int precision) {
+        try {
+            double parsedStep = tryParseDouble(shiftStep);
+            if (parsedStep == 0.0) {
+                throw new ValidationException("Sampling step value can't be null");
+            }
+            int stepPrecision = getNumberPrecision(shiftStep);
+            Calculator calculator = calculatorStorage.getCalculator();
+            double[] barLengths = constructionStorage.getParameters().bars().stream().mapToDouble(BarDTO::getLength).toArray();
+            Group group = diagramCreator.create(calculator, precision, parsedStep, stepPrecision, barLengths);
+            Stage stage = new Stage();
+            stage.setScene(new Scene(group));
+            stage.show();
+        } catch (ValidationException e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage(), ButtonType.OK).show();
+        } catch (Exception e) {
+            log.error("Error while draw diagram. Step: {}, Precision: {}", shiftStep, precision, e);
+            new Alert(Alert.AlertType.ERROR,
+                    "Internal Application Error. Try again or contact to me.", ButtonType.OK).show();
+        }
     }
 
     public int getCountBars() {

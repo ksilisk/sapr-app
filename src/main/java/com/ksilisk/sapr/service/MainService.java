@@ -1,5 +1,8 @@
 package com.ksilisk.sapr.service;
 
+import com.ksilisk.sapr.storage.CalculatorStorage;
+import com.ksilisk.sapr.storage.ConstructionStorage;
+
 public class MainService {
     private static MainService INSTANCE;
 

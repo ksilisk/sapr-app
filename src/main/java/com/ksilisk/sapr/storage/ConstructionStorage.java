@@ -1,4 +1,4 @@
-package com.ksilisk.sapr.service;
+package com.ksilisk.sapr.storage;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

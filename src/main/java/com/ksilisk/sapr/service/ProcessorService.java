@@ -7,6 +7,8 @@ import com.ksilisk.sapr.calculator.impl.NormalVoltageCalculation;
 import com.ksilisk.sapr.payload.Bar;
 import com.ksilisk.sapr.payload.Construction;
 import com.ksilisk.sapr.payload.Node;
+import com.ksilisk.sapr.storage.CalculatorStorage;
+import com.ksilisk.sapr.storage.ConstructionStorage;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import org.apache.commons.math3.linear.LUDecomposition;

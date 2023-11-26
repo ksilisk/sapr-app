@@ -1,6 +1,7 @@
 package com.ksilisk.sapr.service;
 
 import com.ksilisk.sapr.payload.ConstructionParameters;
+import com.ksilisk.sapr.storage.ConstructionStorage;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

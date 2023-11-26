@@ -1,7 +1,7 @@
 package com.ksilisk.sapr.handler;
 
 import com.ksilisk.sapr.payload.ConstructionParameters;
-import com.ksilisk.sapr.service.ConstructionStorage;
+import com.ksilisk.sapr.storage.ConstructionStorage;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
