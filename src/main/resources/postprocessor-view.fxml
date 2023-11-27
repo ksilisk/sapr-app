@@ -12,8 +12,8 @@
         <columns>
             <TableColumn fx:id="xValue" editable="false" sortable="false" text="x"/>
             <TableColumn fx:id="longForce" editable="false" sortable="false" text="Nx"/>
-            <TableColumn fx:id="movement" editable="flase" sortable="false" text="Ux"/>
-            <TableColumn fx:id="normalVolt" editable="false" sortable="false" text="∂x"/>
+            <TableColumn fx:id="normalVolt" editable="false" sortable="false" text="Ux"/>
+            <TableColumn fx:id="movement" editable="flase" sortable="false" text="∂x"/>
         </columns>
     </TableView>
     <HBox spacing="50" alignment="TOP_CENTER">

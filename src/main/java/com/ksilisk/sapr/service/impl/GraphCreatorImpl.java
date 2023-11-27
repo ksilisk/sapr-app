@@ -24,25 +24,25 @@ public class GraphCreatorImpl implements GraphCreator {
 //        comboBox.setValue(LOADS_NAME.get(0));
         XYChart.Series<Number, Number> nxSeries = new XYChart.Series<>();
         LineChart<Number, Number> nxChart = new LineChart<>(new NumberAxis(), new NumberAxis());
-        XYChart.Series<Number, Number> uxSeries = new XYChart.Series<>();
-        LineChart<Number, Number> uxChart = new LineChart<>(new NumberAxis(), new NumberAxis());
-        XYChart.Series<Number, Number> oxSeries = new XYChart.Series<>(); // sigma
-        LineChart<Number, Number> oxChart = new LineChart<>(new NumberAxis(), new NumberAxis()); // sigma
+        XYChart.Series<Number, Number> OxSeries = new XYChart.Series<>();
+        LineChart<Number, Number> OxChart = new LineChart<>(new NumberAxis(), new NumberAxis());
+        XYChart.Series<Number, Number> uxSeries = new XYChart.Series<>(); // sigma
+        LineChart<Number, Number> uxChart = new LineChart<>(new NumberAxis(), new NumberAxis()); // sigma
         for (double x = 0.0; x <= barLength; x += samplingStep) {
             CalculatorResult result = calculator.calculate(x, precision, barIndex);
             nxSeries.getData().add(new XYChart.Data<>(Precision.round(x, stepPrecision), result.getLongitudinalForce()));
+            OxSeries.getData().add(new XYChart.Data<>(Precision.round(x, stepPrecision), result.getNormalVoltage()));
             uxSeries.getData().add(new XYChart.Data<>(Precision.round(x, stepPrecision), result.getMovement()));
-            oxSeries.getData().add(new XYChart.Data<>(Precision.round(x, stepPrecision), result.getNormalVoltage()));
         }
         nxSeries.setName(String.valueOf(barIndex + 1));
+        OxSeries.setName(String.valueOf(barIndex + 1));
         uxSeries.setName(String.valueOf(barIndex + 1));
-        oxSeries.setName(String.valueOf(barIndex + 1));
         nxChart.getData().add(nxSeries);
+        OxChart.getData().add(OxSeries);
         uxChart.getData().add(uxSeries);
-        oxChart.getData().add(oxSeries);
         Tab nxTab = new Tab("Nx", nxChart);
-        Tab uxTab = new Tab("Ux", uxChart);
-        Tab oxTab = new Tab("∂x", oxChart);
+        Tab uxTab = new Tab("Ux", OxChart);
+        Tab oxTab = new Tab("∂x", uxChart);
         TabPane pane = new TabPane(nxTab, uxTab, oxTab);
         return new Group(pane);
     }

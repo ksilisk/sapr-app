@@ -16,32 +16,32 @@ public class DiagramCreatorImpl implements DiagramCreator {
     @Override
     public Group create(Calculator calculator, int precision, double samplingStep, int stepPrecision, double[] barLengths) {
         AreaChart<Number, Number> nxArea = new AreaChart<>(new NumberAxis(), new NumberAxis());
+        AreaChart<Number, Number> OxArea = new AreaChart<>(new NumberAxis(), new NumberAxis());
         AreaChart<Number, Number> uxArea = new AreaChart<>(new NumberAxis(), new NumberAxis());
-        AreaChart<Number, Number> oxArea = new AreaChart<>(new NumberAxis(), new NumberAxis());
         double leftBorder = 0.0;
         for (int i = 0; i < barLengths.length; i++) {
             XYChart.Series<Number, Number> nxSeries = new XYChart.Series<>();
+            XYChart.Series<Number, Number> OxSeries = new XYChart.Series<>();
             XYChart.Series<Number, Number> uxSeries = new XYChart.Series<>();
-            XYChart.Series<Number, Number> oxSeries = new XYChart.Series<>();
             for (double x = 0.0; x <= barLengths[i]; x += samplingStep) {
                 CalculatorResult result = calculator.calculate(x, precision, i);
                 nxSeries.getData().add(new XYChart.Data<>(leftBorder + Precision.round(x, stepPrecision), result.getLongitudinalForce()));
+                OxSeries.getData().add(new XYChart.Data<>(leftBorder + Precision.round(x, stepPrecision), result.getNormalVoltage()));
                 uxSeries.getData().add(new XYChart.Data<>(leftBorder + Precision.round(x, stepPrecision), result.getMovement()));
-                oxSeries.getData().add(new XYChart.Data<>(leftBorder + Precision.round(x, stepPrecision), result.getNormalVoltage()));
             }
             leftBorder += barLengths[i];
             nxSeries.setName(String.valueOf(i + 1));
+            OxSeries.setName(String.valueOf(i + 1));
             uxSeries.setName(String.valueOf(i + 1));
-            oxSeries.setName(String.valueOf(i + 1));
             nxArea.getData().add(nxSeries);
+            OxArea.getData().add(OxSeries);
             uxArea.getData().add(uxSeries);
-            oxArea.getData().add(oxSeries);
         }
         Tab nxTab = new Tab("Nx", nxArea);
         nxTab.setClosable(false);
-        Tab uxTab = new Tab("Ux", uxArea);
+        Tab uxTab = new Tab("Ux", OxArea);
         uxTab.setClosable(false);
-        Tab oxTab = new Tab("∂x", oxArea);
+        Tab oxTab = new Tab("∂x", uxArea);
         oxTab.setClosable(false);
         TabPane tabPane = new TabPane(nxTab, uxTab, oxTab);
         return new Group(tabPane);
