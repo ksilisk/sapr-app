@@ -3,6 +3,8 @@ package com.ksilisk.sapr.service;
 import com.ksilisk.sapr.calculator.Calculator;
 import com.ksilisk.sapr.calculator.CalculatorResult;
 import com.ksilisk.sapr.dto.BarDTO;
+import com.ksilisk.sapr.payload.Bar;
+import com.ksilisk.sapr.payload.Construction;
 import com.ksilisk.sapr.service.impl.DiagramCreatorImpl;
 import com.ksilisk.sapr.service.impl.GraphCreatorImpl;
 import com.ksilisk.sapr.storage.CalculatorStorage;
@@ -170,6 +172,9 @@ public class PostprocessorService {
 
     public int getCountBars() {
         return constructionStorage.getParameters().bars().size();
+    }
+    public List<Double> getPermisVolts() {
+        return Construction.fromParameters(constructionStorage.getParameters()).bars().stream().map(Bar::getPermisVolt).toList();
     }
 
     private double tryParseDouble(String number) {

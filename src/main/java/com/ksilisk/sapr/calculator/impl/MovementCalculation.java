@@ -3,9 +3,9 @@ package com.ksilisk.sapr.calculator.impl;
 import com.ksilisk.sapr.calculator.SaprCalculationBiFunction;
 import org.apache.commons.math3.util.Precision;
 
-// Калькулятор перемещений (∂x)
+// Калькулятор перемещений (σx)
 public class MovementCalculation implements SaprCalculationBiFunction {
-    private static final String FORMATTER = "∂%dx: (%f * x) + (%f)";
+    private static final String FORMATTER = "σ%dx: (%f * x) + (%f)";
     private final double firstArg;
     private final double secondArg;
 

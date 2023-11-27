@@ -13,13 +13,13 @@
             <TableColumn fx:id="xValue" editable="false" sortable="false" text="x"/>
             <TableColumn fx:id="longForce" editable="false" sortable="false" text="Nx"/>
             <TableColumn fx:id="normalVolt" editable="false" sortable="false" text="Ux"/>
-            <TableColumn fx:id="movement" editable="flase" sortable="false" text="∂x"/>
+            <TableColumn fx:id="movement" editable="flase" sortable="false" text="σx"/>
         </columns>
     </TableView>
     <HBox spacing="50" alignment="TOP_CENTER">
         <VBox spacing="10">
             <HBox spacing="5" alignment="CENTER_LEFT">
-                <Label text="Номер стежня: "/>
+                <Label text="Номер стержня: "/>
                 <ComboBox fx:id="barIndexes"/>
             </HBox>
             <HBox spacing="5" alignment="CENTER_LEFT">

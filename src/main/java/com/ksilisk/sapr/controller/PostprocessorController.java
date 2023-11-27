@@ -82,6 +82,23 @@ public class PostprocessorController implements Initializable {
         IntStream.rangeClosed(1, service.getCountBars()).forEach(ind -> barIndexes.getItems().add(ind));
         precisions.setValue(precisions.getItems().get(0));
         barIndexes.setValue(barIndexes.getItems().get(0));
+        List<Double> permissVolt = service.getPermisVolts();
+        movement.setCellFactory(col ->
+                new TableCell<>() {
+                    protected void updateItem(Double item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (item == null || empty) {
+                            return;
+                        }
+                        int currBarInd = barIndexes.getValue() - 1;
+                        setText(String.valueOf(item));
+                        if (Math.abs(item) >= permissVolt.get(currBarInd)) {
+                            setStyle("-fx-background-color: red");
+                        } else{
+                            setStyle("");
+                        }
+                    }
+                });
         initColumns();
     }
 
