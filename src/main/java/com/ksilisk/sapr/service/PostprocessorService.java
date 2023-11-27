@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.StringJoiner;
 
-import static com.ksilisk.sapr.config.SaprBarConfig.USER_HOME_DIRECTORY;
+import static com.ksilisk.sapr.config.SaprAppConfig.USER_HOME_DIRECTORY;
 
 public class PostprocessorService {
     private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(PostprocessorService.class);

@@ -3,7 +3,7 @@ package com.ksilisk.sapr.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ksilisk.sapr.builder.StageBuilder;
-import com.ksilisk.sapr.config.SaprBarConfig;
+import com.ksilisk.sapr.config.SaprAppConfig;
 import com.ksilisk.sapr.dto.BarLoadDTO;
 import com.ksilisk.sapr.dto.NodeLoadDTO;
 import com.ksilisk.sapr.handler.DrawSceneEventHandler;
@@ -33,14 +33,14 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-import static com.ksilisk.sapr.config.SaprBarConfig.USER_HOME_DIRECTORY;
+import static com.ksilisk.sapr.config.SaprAppConfig.USER_HOME_DIRECTORY;
 
 public class PreprocessorService {
     private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(PreprocessorService.class);
     private static final List<String> CONSTRUCTION_FILE_EXTENSIONS = List.of("*.json");
     private static PreprocessorService INSTANCE;
 
-    private final SaprBarConfig saprBarConfig = SaprBarConfig.getInstance();
+    private final SaprAppConfig saprAppConfig = SaprAppConfig.getInstance();
     private final ObjectMapper om = new ObjectMapper();
     private final FileChooser fileChooser = new FileChooser();
     private final ConstructionStorage storage = ConstructionStorage.INSTANCE;
@@ -67,7 +67,7 @@ public class PreprocessorService {
                     .rightSupport(construction.rightSupport())
                     .build();
             Camera camera = new ParallelCamera();
-            Scene scene = new Scene(draw, saprBarConfig.getPreprocessorDrawWidth(), saprBarConfig.getPreprocessorDrawHeight());
+            Scene scene = new Scene(draw, saprAppConfig.getPreprocessorDrawWidth(), saprAppConfig.getPreprocessorDrawHeight());
             scene.setCamera(camera);
             scene.setOnKeyPressed(new DrawSceneEventHandler());
             new StageBuilder()

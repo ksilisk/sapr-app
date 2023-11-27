@@ -5,9 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.ksilisk</groupId>
-    <artifactId>sapr-bar</artifactId>
+    <artifactId>sapr-app</artifactId>
     <version>1.0</version>
-    <name>sapr-bar</name>
+    <name>sapr-app</name>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>

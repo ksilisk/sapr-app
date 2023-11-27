@@ -7,7 +7,7 @@ import java.nio.file.Paths;
 import java.util.Map;
 import java.util.Properties;
 
-public class SaprBarConfig {
+public class SaprAppConfig {
     // Defaults
     public static final String DEFAULT_APPLICATION_CONFIGS_PATH = "conf";
     private static final String DEFAULT_PROCESSOR_VIEW_FILE = "processor-view.fxml";
@@ -19,7 +19,7 @@ public class SaprBarConfig {
     private static final String DEFAULT_PREPROCESSOR_DRAW_MARGIN = "20";
 
     // Configuration files
-    public static final String APPLICATION_PROPERTIES_FILE = "sapr-bar.properties";
+    public static final String APPLICATION_PROPERTIES_FILE = "sapr-app.properties";
     public static final String APPLICATION_CONFIGS_PATH = "config.path";
 
     // Preprocessor Configs
@@ -34,19 +34,19 @@ public class SaprBarConfig {
     public static final String MAIN_VIEW_FILE = "sapr.main.view.file";
 
     // Constants
-    public static final String APP_NAME = "SAPR-BAR v1.0";
+    public static final String APP_NAME = "SAPR-APP v1.0";
     public static final File USER_HOME_DIRECTORY = new File(System.getProperty("user.home"));
 
-    private static SaprBarConfig INSTANCE;
+    private static SaprAppConfig INSTANCE;
     private static boolean isLoaded = false;
 
     private final Properties properties = new Properties();
 
-    private SaprBarConfig(Properties properties) {
+    private SaprAppConfig(Properties properties) {
         this.properties.putAll(properties);
     }
 
-    public static synchronized SaprBarConfig getInstance() {
+    public static synchronized SaprAppConfig getInstance() {
         if (isLoaded) {
             return INSTANCE;
         }
@@ -62,7 +62,7 @@ public class SaprBarConfig {
         properties.putAll(parameters);
         String appConfigsPath = properties.getProperty(APPLICATION_CONFIGS_PATH, DEFAULT_APPLICATION_CONFIGS_PATH);
         properties.load(Files.newInputStream(Paths.get(appConfigsPath, APPLICATION_PROPERTIES_FILE)));
-        INSTANCE = new SaprBarConfig(properties);
+        INSTANCE = new SaprAppConfig(properties);
     }
 
     public File getProcessorViewFile() {

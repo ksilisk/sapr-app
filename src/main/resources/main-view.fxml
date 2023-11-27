@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.VBox?>
 <VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.ksilisk.sapr.controller.MainController" prefHeight="400" prefWidth="400">
-    <Label text="SAPR-BAR version 1.0" style="-fx-font-size: 20"/>
+    <Label text="SAPR-APP version 1.0" style="-fx-font-size: 20"/>
     <Label text="Developed by Shaliko Salimov (ksilisk)"/>
     <Button fx:id="preProcessor" text="Препроцессор" onMouseClicked="#preprocessor" minHeight="50" minWidth="200"
             id="preprocessor"/>

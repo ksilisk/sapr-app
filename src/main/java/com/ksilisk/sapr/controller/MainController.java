@@ -1,7 +1,7 @@
 package com.ksilisk.sapr.controller;
 
 import com.ksilisk.sapr.builder.StageBuilder;
-import com.ksilisk.sapr.config.SaprBarConfig;
+import com.ksilisk.sapr.config.SaprAppConfig;
 import com.ksilisk.sapr.service.MainService;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,12 +15,12 @@ import javafx.stage.Stage;
 public class MainController {
     private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(MainController.class);
 
-    private final SaprBarConfig saprBarConfig = SaprBarConfig.getInstance();
+    private final SaprAppConfig saprAppConfig = SaprAppConfig.getInstance();
     private final MainService service = MainService.getInstance();
 
     public void preprocessor(MouseEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(saprBarConfig.getPreProcessorViewFile().toURI().toURL());
+            FXMLLoader loader = new FXMLLoader(saprAppConfig.getPreProcessorViewFile().toURI().toURL());
             Parent parent = loader.load();
             PreprocessorController controller = loader.getController();
             Stage preprocessorStage = new StageBuilder()
@@ -47,7 +47,7 @@ public class MainController {
                         .show();
                 return;
             }
-            FXMLLoader loader = new FXMLLoader(saprBarConfig.getProcessorViewFile().toURI().toURL());
+            FXMLLoader loader = new FXMLLoader(saprAppConfig.getProcessorViewFile().toURI().toURL());
             Scene scene = new Scene(loader.load());
             Stage stage = new StageBuilder()
                     .title("processor")
@@ -78,7 +78,7 @@ public class MainController {
                         .show();
                 return;
             }
-            FXMLLoader loader = new FXMLLoader(saprBarConfig.getPostProcessorViewFile().toURI().toURL());
+            FXMLLoader loader = new FXMLLoader(saprAppConfig.getPostProcessorViewFile().toURI().toURL());
             Scene scene = new Scene(loader.load());
             Stage stage = new StageBuilder()
                     .title("postprocessor")

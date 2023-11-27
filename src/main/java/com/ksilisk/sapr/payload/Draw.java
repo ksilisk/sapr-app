@@ -1,6 +1,6 @@
 package com.ksilisk.sapr.payload;
 
-import com.ksilisk.sapr.config.SaprBarConfig;
+import com.ksilisk.sapr.config.SaprAppConfig;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
@@ -29,7 +29,7 @@ public class Draw extends Group {
     }
 
     public static class DrawBuilder implements Builder<Draw> {
-        private final SaprBarConfig saprBarConfig = SaprBarConfig.getInstance();
+        private final SaprAppConfig saprAppConfig = SaprAppConfig.getInstance();
         private static final double NODE_LOAD_LENGTH = 25;
         private static final double MIN_BAR_LENGTH = 60;
         private static final double MIN_BAR_AREA = 30;
@@ -41,9 +41,9 @@ public class Draw extends Group {
         private static final double BAR_LOAD_SUB_VECTOR_LENGTH = 10;
         private final List<Bar> bars = new ArrayList<>();
         private final List<com.ksilisk.sapr.payload.Node> nodes = new ArrayList<>();
-        private double margin = saprBarConfig.getPreprocessorDrawMargin();
-        private double width = saprBarConfig.getPreprocessorDrawWidth();
-        private double height = saprBarConfig.getPreprocessorDrawHeight();
+        private double margin = saprAppConfig.getPreprocessorDrawMargin();
+        private double width = saprAppConfig.getPreprocessorDrawWidth();
+        private double height = saprAppConfig.getPreprocessorDrawHeight();
         private boolean leftSupport;
         private boolean rightSupport;
 
