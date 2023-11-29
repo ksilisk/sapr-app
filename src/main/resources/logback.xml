@@ -1,6 +1,6 @@
 <configuration scan="true">
     <appender name="APP-FILE" class="ch.qos.logback.core.FileAppender">
-        <file>${logs.dir}/sapr-bar.log</file>
+        <file>${logs.dir}/sapr-app.log</file>
         <encoder>
             <pattern>%date %level [%thread] %logger{40} %msg%n</pattern>
         </encoder>

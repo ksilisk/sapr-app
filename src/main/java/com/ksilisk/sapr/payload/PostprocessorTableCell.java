@@ -1,4 +1,4 @@
-package com.ksilisk.sapr.service;
+package com.ksilisk.sapr.payload;
 
 import javafx.scene.control.TableCell;
 

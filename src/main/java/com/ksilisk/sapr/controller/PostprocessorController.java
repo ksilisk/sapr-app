@@ -2,7 +2,7 @@ package com.ksilisk.sapr.controller;
 
 import com.ksilisk.sapr.calculator.CalculatorResult;
 import com.ksilisk.sapr.service.PostprocessorService;
-import com.ksilisk.sapr.service.PostprocessorTableCell;
+import com.ksilisk.sapr.payload.PostprocessorTableCell;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;

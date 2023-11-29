@@ -1,7 +1,7 @@
 package com.ksilisk.sapr.validate;
 
 public class ValidationException extends RuntimeException {
-    private static final String DEFAULT_MESSAGE = "Construction parameters is invalid";
+    private static final String DEFAULT_MESSAGE = "Invalid data";
 
     public ValidationException() {
         super(DEFAULT_MESSAGE);

@@ -28,6 +28,7 @@
     </properties>
 
     <dependencies>
+        <!--    JavaFX    -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
@@ -59,11 +60,15 @@
             <artifactId>ikonli-javafx</artifactId>
             <version>${ikonli.version}</version>
         </dependency>
+
+        <!--    Jackson    -->
         <dependency>
             <groupId>com.fasterxml.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-xml</artifactId>
             <version>${jackson.version}</version>
         </dependency>
+
+        <!--    Logs    -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -74,11 +79,15 @@
             <artifactId>logback-classic</artifactId>
             <version>${logback.version}</version>
         </dependency>
+
+        <!--    Math    -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-math3</artifactId>
             <version>${apache.math.version}</version>
         </dependency>
+
+        <!--    Tests    -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
