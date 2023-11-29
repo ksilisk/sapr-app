@@ -173,8 +173,12 @@ public class PostprocessorService {
     public int getCountBars() {
         return constructionStorage.getParameters().bars().size();
     }
-    public List<Double> getPermisVolts() {
-        return Construction.fromParameters(constructionStorage.getParameters()).bars().stream().map(Bar::getPermisVolt).toList();
+
+    public double[] getPermisVolts() {
+        return Construction.fromParameters(constructionStorage.getParameters()).bars()
+                .stream()
+                .mapToDouble(Bar::getPermisVolt)
+                .toArray();
     }
 
     private double tryParseDouble(String number) {
