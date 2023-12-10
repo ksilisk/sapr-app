@@ -1,15 +1,20 @@
 package com.ksilisk.sapr.config;
 
+import com.ksilisk.sapr.service.ProcessorService;
+
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Map;
 import java.util.Properties;
 
 public class SaprAppConfig {
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(ProcessorService.class);
+
     // Defaults
-    public static final String DEFAULT_APPLICATION_CONFIGS_PATH = "conf";
+    public static final String DEFAULT_APPLICATION_CONFIGS_PATH = getResourcesPath();
     private static final String DEFAULT_PROCESSOR_VIEW_FILE = "processor-view.fxml";
     private static final String DEFAULT_PRE_PROCESSOR_VIEW_FILE = "preprocessor-view.fxml";
     private static final String DEFAULT_POST_PROCESSOR_VIEW_FILE = "postprocessor-view.fxml";
@@ -51,6 +56,14 @@ public class SaprAppConfig {
             return INSTANCE;
         }
         throw new IllegalStateException("Configuration is not loaded");
+    }
+
+    private static String getResourcesPath() {
+        URL resourcesURL = ClassLoader.getSystemResource(".");
+        if (resourcesURL == null) {
+            log.warn("System resources dir is null");
+        }
+        return resourcesURL == null ? "conf" : resourcesURL.getPath();
     }
 
     public static synchronized void load(Map<String, String> parameters) throws IOException {
