@@ -28,7 +28,7 @@ public class GraphCreatorImpl implements GraphCreator {
         LineChart<Number, Number> OxChart = new LineChart<>(new NumberAxis(), new NumberAxis());
         XYChart.Series<Number, Number> uxSeries = new XYChart.Series<>(); // sigma
         LineChart<Number, Number> uxChart = new LineChart<>(new NumberAxis(), new NumberAxis()); // sigma
-        for (double x = 0.0; x <= barLength; x += samplingStep) {
+        for (double x = 0.0; Precision.round(x, stepPrecision) <= barLength; x += samplingStep) {
             CalculatorResult result = calculator.calculate(x, precision, barIndex);
             nxSeries.getData().add(new XYChart.Data<>(Precision.round(x, stepPrecision), result.getLongitudinalForce()));
             OxSeries.getData().add(new XYChart.Data<>(Precision.round(x, stepPrecision), result.getNormalVoltage()));

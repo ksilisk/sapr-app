@@ -57,7 +57,7 @@ public class PostprocessorService {
             Calculator calculator = calculatorStorage.getCalculator();
             double barLength = constructionStorage.getParameters().bars().get(barIndex - 1).getLength();
             List<CalculatorResult> calculatorResults = new ArrayList<>();
-            for (double x = 0.0; x <= barLength; x += parsedStep) {
+            for (double x = 0.0; Precision.round(x, stepPrecision) <= barLength; x += parsedStep) {
                 calculatorResults.add(calculator.calculate(Precision.round(x, stepPrecision), precision, barIndex - 1));
             }
             return Optional.of(calculatorResults);

@@ -23,7 +23,7 @@ public class DiagramCreatorImpl implements DiagramCreator {
             XYChart.Series<Number, Number> nxSeries = new XYChart.Series<>();
             XYChart.Series<Number, Number> OxSeries = new XYChart.Series<>();
             XYChart.Series<Number, Number> uxSeries = new XYChart.Series<>();
-            for (double x = 0.0; x <= barLengths[i]; x += samplingStep) {
+            for (double x = 0.0; Precision.round(x, stepPrecision) <= barLengths[i]; x += samplingStep) {
                 CalculatorResult result = calculator.calculate(x, precision, i);
                 nxSeries.getData().add(new XYChart.Data<>(leftBorder + Precision.round(x, stepPrecision), result.getLongitudinalForce()));
                 OxSeries.getData().add(new XYChart.Data<>(leftBorder + Precision.round(x, stepPrecision), result.getNormalVoltage()));
