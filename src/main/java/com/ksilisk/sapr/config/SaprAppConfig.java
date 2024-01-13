@@ -22,6 +22,7 @@ public class SaprAppConfig {
     private static final String DEFAULT_PREPROCESSOR_DRAW_HEIGHT = "500";
     private static final String DEFAULT_PREPROCESSOR_DRAW_WIDTH = "700";
     private static final String DEFAULT_PREPROCESSOR_DRAW_MARGIN = "20";
+    private static final String DEFAULT_DRAW_SCALE_SHIFT_STEP = "10";
 
     // Configuration files
     public static final String APPLICATION_PROPERTIES_FILE = "sapr-app.properties";
@@ -31,6 +32,7 @@ public class SaprAppConfig {
     public static final String PREPROCESSOR_DRAW_HEIGHT = "sapr.preprocessor.draw.height";
     public static final String PREPROCESSOR_DRAW_WIGHT = "sapr.preprocessor.draw.width";
     public static final String PREPROCESSOR_DRAW_MARGIN = "sapr.preprocessor.draw.margin";
+    public static final String PREPROCESSOR_DRAW_SCALE_SHIFT_STEP = "sapr.preprocessor.draw.scale.shift-step";
 
     // Views
     public static final String PROCESSOR_VIEW_FILE = "sapr.processor.view.file";
@@ -40,6 +42,7 @@ public class SaprAppConfig {
 
     // Constants
     public static final String APP_NAME = "SAPR-APP v1.0";
+    public static final String ADDITIONAL_INFO = "Developed by Shaliko Salimov (ksilisk) in 2023";
     public static final File USER_HOME_DIRECTORY = new File(System.getProperty("user.home"));
 
     private static SaprAppConfig INSTANCE;
@@ -112,5 +115,9 @@ public class SaprAppConfig {
 
     public double getPreprocessorDrawMargin() {
         return Double.parseDouble(properties.getProperty(PREPROCESSOR_DRAW_MARGIN, DEFAULT_PREPROCESSOR_DRAW_MARGIN));
+    }
+
+    public int getPreprocessorDrawScaleShiftStep() {
+        return Integer.parseInt(properties.getProperty(PREPROCESSOR_DRAW_SCALE_SHIFT_STEP, DEFAULT_DRAW_SCALE_SHIFT_STEP));
     }
 }
