@@ -6,7 +6,7 @@
 
     <groupId>com.ksilisk</groupId>
     <artifactId>sapr-app</artifactId>
-    <version>1.1</version>
+    <version>1.2</version>
     <name>sapr-app</name>
 
     <properties>
